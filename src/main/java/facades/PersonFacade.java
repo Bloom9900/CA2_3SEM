@@ -1,5 +1,8 @@
 package facades;
 
+import dto.PersonDTO;
+import dto.PersonsDTO;
+import entities.Person;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -33,4 +36,24 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
+    public PersonsDTO getAllPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
+        } finally {
+            em.close();
+        }
+    }
+    
+    public PersonDTO getPerson(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new PersonDTO(em.find(Person.class, id));
+        } finally {
+            em.close();
+        }
+    }
+    
+    
+    
 }
