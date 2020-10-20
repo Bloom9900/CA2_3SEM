@@ -3,8 +3,10 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.PersonDTO;
+import entities.CityInfo;
 import utils.EMF_Creator;
 import facades.PersonFacade;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -86,10 +88,10 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     }
     
-    @Path("../zipcodes")
+    @Path("zipcodes")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getZipCodes() {
-     return "{\"msg\":\"Hello World\"}";
+        return gson.toJson(facade.getZipCodes());
     }
 }

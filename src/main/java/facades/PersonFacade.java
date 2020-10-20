@@ -1,12 +1,17 @@
 package facades;
 
+import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import entities.CityInfo;
 import entities.Person;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -62,6 +67,15 @@ public class PersonFacade {
         try {
             Person person = em.find(Person.class, city);
             return person.getPhone();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public CityInfosDTO getZipCodes() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new CityInfosDTO(em.createNamedQuery("CityInfo.getAllRows", CityInfo.class).getResultList());
         } finally {
             em.close();
         }
