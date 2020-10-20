@@ -74,6 +74,14 @@ public class Phone implements Serializable {
         this.description = description;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+    
+    public void setPerson(Person p) {
+        this.person = p;
+    }
+
     
     
 }

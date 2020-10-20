@@ -74,6 +74,14 @@ public class Hobby implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Set<Person> getPersons() {
+        return persons;
+    }
+    
+    public void addPerson(Person p) {
+        this.persons.add(p);
+    }
     
     
     

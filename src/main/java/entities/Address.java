@@ -78,6 +78,22 @@ public class Address implements Serializable {
         this.additionalInfo = additionalInfo;
     }
 
+    public Set<Person> getPersons() {
+        return persons;
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+    
+    public void addPerson(Person p) {
+        this.persons.add(p);
+    }
+    
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
     
     
 }
