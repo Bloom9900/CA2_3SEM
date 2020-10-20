@@ -2,12 +2,11 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.PersonDTO;
 import entities.Address;
-import entities.CityInfo;
 import entities.Hobby;
 import utils.EMF_Creator;
 import facades.PersonFacade;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,7 +32,7 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     }
     
-    /*
+    
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -44,55 +43,54 @@ public class PersonResource {
     @Path("{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPerson(@PathParam("id") long id ) {
-        PersonDTO p = facade.getPerson(id);
-        
-        return gson.toJson(p);
+    public String getPerson(@PathParam("id") long id ) {       
+        return gson.toJson(facade.getPerson(id));
     }
     
-    
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String addPerson(String person) {
-       PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
-       Address address = new Address(pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity());
-       Hobby hobby = new Hobby(pDTO.getHobbies());
-        PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
-        return gson.toJson(pAdded);
-    } 
-    
-    */
-    
-    @Path("hobby/{hobby}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonByHobby(@PathParam("hobby") String hobby) {
-       // return gson.toJson(facade.getPersonByHobby(hobby));
-        return "{\"msg\":\"Test\"}";
-    }
-    
-    @Path("city/{city}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getPhoneNumberByCity(@PathParam("city") String city) {
-     //   return gson.toJson(facade.getPhoneNumberByCity(city));
-     return "{\"msg\":\"Hello World\"}";
-    }
-    
-    @PUT
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public String updatePerson(@PathParam("id") long id,  String person) {
-        /*PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
-        Person p = new Person(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone());
-        p.setId(id);
-        Person pNew = FACADE.editPerson(p);
-        return GSON.toJson(new PersonDTO(pNew));
-        */
-        return "{\"msg\":\"Hello World\"}";
-    }
+//    
+//    
+//    @POST
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String addPerson(String person) {
+//       PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
+//       Address address = new Address(pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity());
+//       Hobby hobby = new Hobby(pDTO.getHobbies());
+//        PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
+//        return gson.toJson(pAdded);
+//    } 
+//    
+//    */
+//    
+//    @Path("hobby/{hobby}")
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String getPersonByHobby(@PathParam("hobby") String hobby) {
+//       // return gson.toJson(facade.getPersonByHobby(hobby));
+//        return "{\"msg\":\"Test\"}";
+//    }
+//    
+//    @Path("city/{city}")
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String getPhoneNumberByCity(@PathParam("city") String city) {
+//     //   return gson.toJson(facade.getPhoneNumberByCity(city));
+//     return "{\"msg\":\"Hello World\"}";
+//    }
+//    
+//    @PUT
+//    @Path("{id}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public String updatePerson(@PathParam("id") long id,  String person) {
+//        /*PersonDTO pDTO = GSON.fromJson(person, PersonDTO.class);
+//        Person p = new Person(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone());
+//        p.setId(id);
+//        Person pNew = FACADE.editPerson(p);
+//        return GSON.toJson(new PersonDTO(pNew));
+//        */
+//        return "{\"msg\":\"Hello World\"}";
+//    }
     
     /*
     @Path("zipcodes")

@@ -1,10 +1,10 @@
 package facades;
 
 
+import dto.PersonDTO;
+import dto.PersonsDTO;
+import entities.Address;
 import entities.Person;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,19 +19,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class PersonFacadeTest {
-/*
+
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    private static Set<String> h1 = new HashSet<>(Arrays.asList("CS:GO", "Programmering"));
-    private static Person p1 = new Person("Jannich", "Højmose", "cph-jm312@cphbusiness.dk", "23656270", h1);
-    private static Set<String> h2 = new HashSet<>(Arrays.asList("Musik", "Programmering"));
-    private static Person p2 = new Person("Daniel", "Bengtsen", "cph-db145@cphbusiness.dk", "51784562", h2);
-    private static Set<String> h3 = new HashSet<>(Arrays.asList("Forum", "Programmering"));
-    private static Person p3 = new Person("Emil", "Grøndlund", "cph-eg60@cphbusiness.dk", "87562147", h3);
-    private static Set<String> h4 = new HashSet<>(Arrays.asList("Vaping", "Programmering"));
-    private static Person p4 = new Person("Jimmy", "Pham", "cph-jp327@cphbusiness.dk", "65547125", h4);
+    private static Address a1 = new Address("Strandparken 2A", "");
+    private static Person p1 = new Person("cph-jm312@cphbusiness.dk", "Jannich", "Højmose", a1);
+    private static Address a2 = new Address("Egevangen 4", "");
+    private static Person p2 = new Person("cph-db145@cphbusiness.dk", "Daniel", "Bengtsen", a2);
+    private static Address a3 = new Address("Gadevang 25", "");
+    private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grøndlund", a3);
+    private static Address a4 = new Address("Københavnsvej 96", "");
+    private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4);
 
     public PersonFacadeTest() {
     }
@@ -77,11 +77,17 @@ public class PersonFacadeTest {
         int expResult = 4;
         PersonsDTO result = facade.getAllPersons();
         assertEquals(expResult, result.getAll().size());
-//        PersonDTO p1DTO = new PersonDTO(p1);
-//        PersonDTO p2DTO = new PersonDTO(p2);
-//        PersonDTO p3DTO = new PersonDTO(p3);
-//        PersonDTO p4DTO = new PersonDTO(p4);
-//        assertThat(result.getAll(), containsInAnyOrder(p1DTO, p2DTO, p3DTO, p4DTO));
+        PersonDTO p1DTO = new PersonDTO(p1);
+        PersonDTO p2DTO = new PersonDTO(p2);
+        PersonDTO p3DTO = new PersonDTO(p3);
+        PersonDTO p4DTO = new PersonDTO(p4);
+        assertThat(result.getAll(), containsInAnyOrder(p1DTO, p2DTO, p3DTO, p4DTO));
     }
-*/
+    
+    @Test
+    public void testGetPerson() {
+        PersonDTO result = facade.getPerson(p1.getId());
+        PersonDTO expected = new PersonDTO(p1);
+        assertEquals(result, expected);
+    }
 }

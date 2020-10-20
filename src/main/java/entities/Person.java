@@ -6,7 +6,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,9 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -25,6 +25,9 @@ import javax.persistence.OneToMany;
  * @author Danie
  */
 @Entity
+@NamedQueries({
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person"),
+@NamedQuery(name = "Person.getAllRows", query = "SELECT p FROM Person p")})
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,10 +47,10 @@ public class Person implements Serializable {
     private Address address;
     
     @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Hobby> hobbies = new HashSet();
+    private Set<Hobby> hobbies;
     
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Phone> phoneNumbers = new HashSet();
+    private Set<Phone> phoneNumbers;
 
     public Person() {
     }
@@ -102,8 +105,4 @@ public class Person implements Serializable {
     public Set<Phone> getPhoneNumbers() {
         return phoneNumbers;
     }
-    
-    
-
-    
 }
