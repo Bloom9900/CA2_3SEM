@@ -103,6 +103,27 @@ public class Person implements Serializable {
         return phoneNumbers;
     }
     
+    public void addAddress(Address address) {
+        if(address != null) {
+            this.address = address;
+            address.addPerson(this);
+        } else {
+            this.address = null;
+        }
+    }
+    
+    public void addPhone(String number, String description) {
+        Phone phone = new Phone(number, description);
+        phone.setPerson(this);
+        this.phoneNumbers.add(phone);
+    }
+    
+    public void addHobby(String name, String description) {
+        Hobby hobby = new Hobby(name, description);
+        hobby.addPerson(this);
+        this.hobbies.add(hobby);
+    }
+    
     
 
     

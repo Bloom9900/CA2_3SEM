@@ -69,6 +69,16 @@ public class CityInfo implements Serializable {
         this.city = city;
     }
 
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+    
+    public void setAddress(String street, String additionalInfo) {
+        Address a = new Address(street, additionalInfo);
+        a.setCityInfo(this);
+        this.addresses.add(a);
+    }
+
     
     
 }
