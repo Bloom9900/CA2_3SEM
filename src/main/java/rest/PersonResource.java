@@ -55,10 +55,11 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public String addPerson(String person) {
        PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
-       Address address = new Address(pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity());
+       CityInfo ci = new CityInfo(pDTO.getZipCode(), pDTO.getCity());
+       Address address = new Address(pDTO.getStreet(), "blabla", ci);
        Hobby hobby = new Hobby(pDTO.getHobbies());
-        PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
-        return gson.toJson(pAdded);
+       PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address);
+       return gson.toJson(pAdded);
     } 
     
     @Path("hobby/{hobby}")

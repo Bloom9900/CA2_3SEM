@@ -1,11 +1,15 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -24,16 +28,19 @@ public class Person implements Serializable {
     private String lastName;
     private String email;
     private String phone;
+    
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private Address address;
-    private Hobby hobbies;
+    
+    @ManyToMany(mappedBy = "persons", cascade = { CascadeType.PERSIST })
+    private List<Hobby> hobbies;
 
-    public Person(String firstName, String lastName, String email, String phone, Address address, Hobby hobbies) {
+    public Person(String firstName, String lastName, String email, String phone, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.hobbies = hobbies;
     }
     
     public Person() {
@@ -92,11 +99,13 @@ public class Person implements Serializable {
         }
     }
 
-    public Hobby getHobbies() {
+    public List<Hobby> getHobbies() {
         return hobbies;
     }
-
-    public void setHobbies(Hobby hobbies) {
-        this.hobbies = hobbies;
+    
+    public void addHobby(String name) {
+        Hobby hobby = new Hobby(name);
+        hobby.addPerson(this);
+        hobbies.add(hobby);
     }
 }

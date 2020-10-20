@@ -83,9 +83,9 @@ public class PersonFacade {
         }
     }
     
-    public PersonDTO addPerson(String fName, String lName, String phone, String email, Address address, Hobby hobby ) {
+    public PersonDTO addPerson(String fName, String lName, String phone, String email, Address address ) {
         EntityManager em = getEntityManager();
-        Person person = new Person(fName, lName, phone, email, address, hobby);
+        Person person = new Person(fName, lName, phone, email, address);
 
         try {
             em.getTransaction().begin();

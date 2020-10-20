@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -19,16 +20,18 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String street;
-    private String zipCode;
-    private String city;
+    private String additionalInfo;
     
-    @OneToMany(mappedBy="address", cascade = { CascadeType.PERSIST})
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
+    private CityInfo ci;
+    
+    @OneToMany(mappedBy="address", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Person> persons;
 
-    public Address(String street, String zipCode, String city) {
+    public Address(String street, String additionalInfo, CityInfo ci) {
         this.street = street;
-        this.zipCode = zipCode;
-        this.city = city;
+        this.additionalInfo = additionalInfo;
+        this.ci = ci;
     }
 
     public Address() {
@@ -56,22 +59,6 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public List<Person> getPersons() {
         return persons;
     }
@@ -79,6 +66,24 @@ public class Address implements Serializable {
     public void setPersons(List<Person> persons) {
         this.persons = persons;
     }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public CityInfo getCityInfo() {
+        return ci;
+    }
+
+    public void setCityInfo(CityInfo ci) {
+        this.ci = ci;
+    }
+    
+    
     
     
 }
