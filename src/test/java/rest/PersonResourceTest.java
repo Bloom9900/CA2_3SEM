@@ -83,6 +83,7 @@ public class PersonResourceTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);

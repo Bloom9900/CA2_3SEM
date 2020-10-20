@@ -3,7 +3,6 @@ package facades;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Person;
-import entities.Phone;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -56,14 +55,5 @@ public class PersonFacade {
         }
     }
     
-    public Set<Phone> getPhoneNumberByCity(String city) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Person person = em.find(Person.class, city);
-            return person.getPhoneNumbers();
-        } finally {
-            em.close();
-        }
-    }
-
+    //Metode med phone from city evt. benyt NamedQuery på Phone entity og filtrer city.
 }
