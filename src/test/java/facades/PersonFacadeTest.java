@@ -15,7 +15,6 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
@@ -90,5 +89,17 @@ public class PersonFacadeTest {
         PersonDTO result = facade.getPerson(p1.getId());
         PersonDTO expected = new PersonDTO(p1);
         assertEquals(result, expected);
+    }
+    
+    @Test
+    public void testAddPerson() {
+        String email = "test@gmail.com";
+        String fName = "Test";
+        String lName = "Tester";
+        Address address = new Address("Addresse", "Test addresse");
+        PersonDTO result = facade.addPerson(email, fName, lName, address);
+        Person p = new Person(email, fName, lName, address);
+        PersonDTO expected = new PersonDTO(p);
+        assertEquals(expected.getEmail(), result.getEmail());
     }
 }

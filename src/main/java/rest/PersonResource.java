@@ -11,7 +11,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -47,20 +46,16 @@ public class PersonResource {
         return gson.toJson(facade.getPerson(id));
     }
     
-//    
-//    
 //    @POST
 //    @Produces(MediaType.APPLICATION_JSON)
 //    @Consumes(MediaType.APPLICATION_JSON)
 //    public String addPerson(String person) {
 //       PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
-//       Address address = new Address(pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity());
-//       Hobby hobby = new Hobby(pDTO.getHobbies());
-//        PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
-//        return gson.toJson(pAdded);
+//       Address address = new Address(pDTO.getStreet());
+//       Hobby hobby = new Hobby(pDTO);
+//       return gson.toJson(pAdded);
 //    } 
-//    
-//    */
+    
 //    
 //    @Path("hobby/{hobby}")
 //    @GET

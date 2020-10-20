@@ -2,6 +2,7 @@ package facades;
 
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import entities.Address;
 import entities.Person;
 import java.util.Set;
 import javax.persistence.EntityManager;
@@ -55,5 +56,16 @@ public class PersonFacade {
         }
     }
     
-    //Metode med phone from city evt. benyt NamedQuery på Phone entity og filtrer city.
+    public PersonDTO addPerson(String email, String firstName, String lastName, Address address) {
+        EntityManager em = emf.createEntityManager();
+        Person p = new Person(email, firstName, lastName, address);
+        try {
+            em.getTransaction().begin();
+            em.persist(p);
+            em.getTransaction().commit();
+            return new PersonDTO(p);
+        } finally {
+            em.close();
+        }
+    }
 }
