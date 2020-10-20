@@ -36,13 +36,14 @@ public class PersonResource {
     public String getAllPersons() {
         return gson.toJson(facade.getAllPersons());
     }
-    
+
     @Path("{id}")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonByID(@PathParam("id") long id) {
-      /*  return gson.toJson(facade.getPersonByID(id));*/
-        return "{\"msg\":\"Hello World\"}";
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPerson(@PathParam("id") long id ) {
+        PersonDTO p = facade.getPerson(id);
+        
+        return gson.toJson(p);
     }
     
     @POST
@@ -55,15 +56,15 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     } 
     
-    @Path("{hobby}")
+    @Path("hobby/{hobby}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPersonByHobby(@PathParam("hobby") String hobby) {
        // return gson.toJson(facade.getPersonByHobby(hobby));
-        return "{\"msg\":\"Hello World\"}";
+        return "{\"msg\":\"Test\"}";
     }
     
-    @Path("{city}")
+    @Path("city/{city}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPhoneNumberByCity(@PathParam("city") String city) {
