@@ -91,5 +91,19 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public Set<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public Set<Phone> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+    
+    
+
     
 }
