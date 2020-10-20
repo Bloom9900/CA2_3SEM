@@ -1,7 +1,13 @@
 package facades;
 
+import dto.PersonDTO;
+import dto.PersonsDTO;
+import entities.Person;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -11,13 +17,13 @@ public class PersonFacade {
 
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
-    
+
     //Private Constructor to ensure Singleton
-    private PersonFacade() {}
-    
-    
+    private PersonFacade() {
+    }
+
     /**
-     * 
+     *
      * @param _emf
      * @return an instance of this facade class.
      */
@@ -32,5 +38,44 @@ public class PersonFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+
+    public PersonsDTO getAllPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
+        } finally {
+            em.close();
+        }
+    }
+
+    public PersonDTO getPerson(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return new PersonDTO(em.find(Person.class, id));
+        } finally {
+            em.close();
+        }
+    }
+    
+    public String getPhoneNumberByCity(String city) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Person person = em.find(Person.class, city);
+            return person.getPhone();
+        } finally {
+            em.close();
+        }
+    }
+    
+    
+    /*
+     @Path("{city}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPhoneNumberByCity(@PathParam("city") String city) {
+     //   return gson.toJson(facade.getPhoneNumberByCity(city));
+     return "{\"msg\":\"Hello World\"}";
+    }
+    */
 
 }

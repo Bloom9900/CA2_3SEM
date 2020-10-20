@@ -30,11 +30,11 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     }
     
+    @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllPersons() {
-       /* return gson.toJson(facade.getAllPersons()); */
-       return "{\"msg\":\"Hello World\"}";
+        return gson.toJson(facade.getAllPersons());
     }
     
     @Path("{id}")
