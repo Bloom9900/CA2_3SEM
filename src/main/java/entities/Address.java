@@ -9,11 +9,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -26,13 +28,19 @@ public class Address implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
     private Long id;
+    @Column(name = "street")
     private String Street;
+    @Column(name = "additional_info")
     private String additionalInfo;
     
-    @OneToMany(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "person_id")
+    @OneToMany(mappedBy = "address", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Person> persons = new HashSet();
+    
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "cityinfo_id")
+    private CityInfo cityInfo;
 
     public Address() {
     }

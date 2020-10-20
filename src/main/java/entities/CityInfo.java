@@ -6,10 +6,16 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -21,9 +27,15 @@ public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "city_info_id")
     private Long id;
+    @Column(name = "zip_code")
     private String zipCode;
+    @Column(name = "city")
     private String city;
+    
+    @OneToMany(mappedBy = "cityInfo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Address> addresses = new HashSet();
 
     public CityInfo() {
     }
