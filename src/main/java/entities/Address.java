@@ -6,10 +6,14 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -24,6 +28,9 @@ public class Address implements Serializable {
     private Long id;
     private String Street;
     private String additionalInfo;
+    
+    @OneToMany(mappedBy = "address", cascade = {CascadeType.PERSIST})
+    private Set<Person> person = new HashSet();
 
     public Address() {
     }

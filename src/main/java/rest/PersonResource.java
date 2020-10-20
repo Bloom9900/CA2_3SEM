@@ -2,7 +2,6 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -34,6 +33,7 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     }
     
+    /*
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,6 +50,7 @@ public class PersonResource {
         return gson.toJson(p);
     }
     
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,6 +61,8 @@ public class PersonResource {
         PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
         return gson.toJson(pAdded);
     } 
+    
+    */
     
     @Path("hobby/{hobby}")
     @GET
@@ -91,10 +94,12 @@ public class PersonResource {
         return "{\"msg\":\"Hello World\"}";
     }
     
+    /*
     @Path("zipcodes")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getZipCodes() {
         return gson.toJson(facade.getZipCodes());
     }
+    */
 }

@@ -1,7 +1,6 @@
 package facades;
 
-import dto.PersonDTO;
-import dto.PersonsDTO;
+
 import entities.Person;
 import java.util.Arrays;
 import java.util.HashSet;

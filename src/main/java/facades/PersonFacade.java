@@ -1,8 +1,5 @@
 package facades;
 
-import dto.CityInfosDTO;
-import dto.PersonDTO;
-import dto.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -45,76 +42,5 @@ public class PersonFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public PersonsDTO getAllPersons() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
-        } finally {
-            em.close();
-        }
-    }
-
-    public PersonDTO getPerson(Long id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return new PersonDTO(em.find(Person.class, id));
-        } finally {
-            em.close();
-        }
-    }
-    
-    public String getPhoneNumberByCity(String city) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Person person = em.find(Person.class, city);
-            return person.getPhone();
-        } finally {
-            em.close();
-        }
-    }
-    
-    public CityInfosDTO getZipCodes() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return new CityInfosDTO(em.createNamedQuery("CityInfo.getAllRows", CityInfo.class).getResultList());
-        } finally {
-            em.close();
-        }
-    }
-    
-    public PersonDTO addPerson(String fName, String lName, String phone, String email, Address address, Hobby hobby ) {
-        EntityManager em = getEntityManager();
-        Person person = new Person(fName, lName, phone, email, address, hobby);
-
-        try {
-            em.getTransaction().begin();
-                /*Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
-                query.setParameter("street", address.getStreet());
-                query.setParameter("zip", address.getZipCode());
-                query.setParameter("city", address.getCity());
-                List<Address> addresses = query.getResultList();
-                if (addresses.size() > 0){
-                    person.setAddress(addresses.get(0)); // The address already exists
-                } else {
-                    person.setAddress(new Address(address.getStreet(), address.getZipCode(), address.getCity()));
-                }*/
-                em.persist(person);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return new PersonDTO(person);
-    }
-    
-    /*
-     @Path("{city}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getPhoneNumberByCity(@PathParam("city") String city) {
-     //   return gson.toJson(facade.getPhoneNumberByCity(city));
-     return "{\"msg\":\"Hello World\"}";
-    }
-    */
 
 }

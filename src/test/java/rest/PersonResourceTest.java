@@ -1,6 +1,6 @@
 package rest;
 
-import dto.PersonDTO;
+
 import entities.Person;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
