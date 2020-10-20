@@ -3,7 +3,9 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.PersonDTO;
+import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import java.util.List;
@@ -52,10 +54,11 @@ public class PersonResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String addPerson(String person) {
-       /* PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
-        PersonDTO pAdded = facade.addPerson(/* getters *//*);
-        return gson.toJson(pAdded);*/
-        return "{\"msg\":\"Hello World\"}";
+       PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
+       Address address = new Address(pDTO.getStreet(), pDTO.getZipCode(), pDTO.getCity());
+       Hobby hobby = new Hobby(pDTO.getHobbies());
+        PersonDTO pAdded = facade.addPerson(pDTO.getfName(), pDTO.getlName(), pDTO.getPhone(), pDTO.getEmail(), address , hobby);
+        return gson.toJson(pAdded);
     } 
     
     @Path("hobby/{hobby}")

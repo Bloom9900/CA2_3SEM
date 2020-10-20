@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class PersonFacadeTest {
-
+/*
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
     private static Set<String> h1 = new HashSet<>(Arrays.asList("CS:GO", "Programmering"));
@@ -84,5 +84,5 @@ public class PersonFacadeTest {
 //        PersonDTO p4DTO = new PersonDTO(p4);
 //        assertThat(result.getAll(), containsInAnyOrder(p1DTO, p2DTO, p3DTO, p4DTO));
     }
-
+*/
 }

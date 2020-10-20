@@ -3,7 +3,9 @@ package facades;
 import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,6 +83,29 @@ public class PersonFacade {
         }
     }
     
+    public PersonDTO addPerson(String fName, String lName, String phone, String email, Address address, Hobby hobby ) {
+        EntityManager em = getEntityManager();
+        Person person = new Person(fName, lName, phone, email, address, hobby);
+
+        try {
+            em.getTransaction().begin();
+                /*Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
+                query.setParameter("street", address.getStreet());
+                query.setParameter("zip", address.getZipCode());
+                query.setParameter("city", address.getCity());
+                List<Address> addresses = query.getResultList();
+                if (addresses.size() > 0){
+                    person.setAddress(addresses.get(0)); // The address already exists
+                } else {
+                    person.setAddress(new Address(address.getStreet(), address.getZipCode(), address.getCity()));
+                }*/
+                em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
+    }
     
     /*
      @Path("{city}")

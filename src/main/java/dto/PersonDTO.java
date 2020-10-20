@@ -1,6 +1,8 @@
 package dto;
 
+import entities.Hobby;
 import entities.Person;
+import java.util.List;
 
 public class PersonDTO {
 
@@ -12,6 +14,7 @@ public class PersonDTO {
     private String street;
     private String zipCode;
     private String city;
+    private String hobbies;
     
     public PersonDTO() {
     }
@@ -23,11 +26,22 @@ public class PersonDTO {
         this.email = p.getEmail();
         this.id = p.getId();
         if (p.getAddress() != null) {
-            this.street = street;
-            this.zipCode = zipCode;
-            this.city = city;
+            this.street = p.getAddress().getStreet();
+            this.zipCode = p.getAddress().getZipCode();
+            this.city = p.getAddress().getCity();
         }
+        if (p.getHobbies()!= null) {
+            this.hobbies = p.getHobbies().getHobby();
     }
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+    
+    
+    
+    
 
     public Long getId() {
         return id;

@@ -25,13 +25,14 @@ public class Person implements Serializable {
     private String email;
     private String phone;
     private Address address;
-    private Set<String> hobbies;
+    private Hobby hobbies;
 
-    public Person(String firstName, String lastName, String email, String phone, Set<String> hobbies) {
+    public Person(String firstName, String lastName, String email, String phone, Address address, Hobby hobbies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.address = address;
         this.hobbies = hobbies;
     }
     
@@ -91,11 +92,11 @@ public class Person implements Serializable {
         }
     }
 
-    public Set<String> getHobbies() {
+    public Hobby getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(Set<String> hobbies) {
+    public void setHobbies(Hobby hobbies) {
         this.hobbies = hobbies;
     }
 }
