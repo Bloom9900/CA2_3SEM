@@ -20,10 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-/**
- *
- * @author Danie
- */
 @Entity
 @NamedQueries({
 @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person"),
@@ -52,7 +48,6 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Phone> phoneNumbers;
     
-    //@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "phone_id")
     private Phone phone;

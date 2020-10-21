@@ -33,11 +33,7 @@ public class Phone implements Serializable {
     private String number;
     @Column(name = "description")
     private String description;
-    /*
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "person_id")
-    private Person person;
-    */
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "person_id")
     private Person person;
@@ -85,7 +81,4 @@ public class Phone implements Serializable {
     public void setPerson(Person p) {
         this.person = p;
     }
-
-    
-    
 }
