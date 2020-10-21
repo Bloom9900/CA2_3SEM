@@ -139,18 +139,14 @@ public class PersonResourceTest {
                 .body("email", equalTo(p1.getEmail()));
     }
     
-    @Disabled
     @Test
     public void testAddPerson() throws Exception {
-        Person p = new Person("Email", "Fornavn", "Efternavn", new Address("Vejnavn", "Ekstra info"));
-        given()
-                .contentType(ContentType.JSON)
-                .body(new PersonDTO(p))
-                .when()
-                .post("person")
+         given()
+                .contentType("application/json")
+                 .body(new Person("test@gmail.com", "Jannich", "Højmose", new Address("SecretAddress", "Additional info")))
                 .then()
-                .body("email", equalTo("Email"))
-                .body("fName", equalTo("Fornavn"))
-                .body("lName", equalTo("Efternavn"));
+                .body("email", equalTo("test@gmail.com"))
+                .body("fName", equalTo("Jannich"))
+                .body("lName", equalTo("Højmose"));
     }
 }
