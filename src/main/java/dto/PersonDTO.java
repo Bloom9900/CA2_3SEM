@@ -32,6 +32,7 @@ public class PersonDTO {
                 this.zipCode = p.getAddress().getCityInfo().getZipCode();
             }
         }
+        
     }
     
     public PersonDTO() {
