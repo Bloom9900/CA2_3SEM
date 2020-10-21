@@ -3,8 +3,8 @@ package facades;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
+import entities.CityInfo;
 import entities.Person;
-import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,7 +37,7 @@ public class PersonFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
     public PersonsDTO getAllPersons() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -46,7 +46,7 @@ public class PersonFacade {
             em.close();
         }
     }
-    
+
     public PersonDTO getPerson(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -55,11 +55,16 @@ public class PersonFacade {
             em.close();
         }
     }
-    
-    public PersonDTO addPerson(String email, String firstName, String lastName, Address address) {
+
+    public PersonDTO addPerson(String email, String firstName, String lastName, String street, String additionalInfo, String zipCode, String city) {
         EntityManager em = emf.createEntityManager();
+        Address address = new Address(street, additionalInfo);
         Person p = new Person(email, firstName, lastName, address);
         try {
+            CityInfo cityInfo = em.find(CityInfo.class, zipCode);
+            if(cityInfo != null) {
+                address.setCityInfo(cityInfo);
+            }
             em.getTransaction().begin();
             em.persist(p);
             em.getTransaction().commit();

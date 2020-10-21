@@ -41,7 +41,7 @@ public class Address implements Serializable {
     private Set<Person> persons = new HashSet();
     
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "cityinfo_id")
+    @JoinColumn(name = "zip_code")
     private CityInfo cityInfo;
 
     public Address() {

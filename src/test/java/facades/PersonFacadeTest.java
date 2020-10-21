@@ -4,6 +4,7 @@ package facades;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
+import entities.CityInfo;
 import entities.Person;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
@@ -96,9 +97,12 @@ public class PersonFacadeTest {
         String email = "test@gmail.com";
         String fName = "Test";
         String lName = "Tester";
-        Address address = new Address("Addresse", "Test addresse");
-        PersonDTO result = facade.addPerson(email, fName, lName, address);
-        Person p = new Person(email, fName, lName, address);
+        String street = "Testvej";
+        String additionalInfo = "Test info";
+        String zipCode = "1000";
+        String city = "TestCity";
+        PersonDTO result = facade.addPerson(email, fName, lName, street, additionalInfo, zipCode, city);
+        Person p = new Person(email, fName, lName, new Address(street, additionalInfo));
         PersonDTO expected = new PersonDTO(p);
         assertEquals(expected.getEmail(), result.getEmail());
     }

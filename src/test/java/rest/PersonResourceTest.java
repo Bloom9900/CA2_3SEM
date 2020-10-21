@@ -7,6 +7,7 @@ import entities.Person;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.net.URI;
 import java.util.Arrays;
@@ -136,5 +137,20 @@ public class PersonResourceTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("email", equalTo(p1.getEmail()));
+    }
+    
+    @Disabled
+    @Test
+    public void testAddPerson() throws Exception {
+        Person p = new Person("Email", "Fornavn", "Efternavn", new Address("Vejnavn", "Ekstra info"));
+        given()
+                .contentType(ContentType.JSON)
+                .body(new PersonDTO(p))
+                .when()
+                .post("person")
+                .then()
+                .body("email", equalTo("Email"))
+                .body("fName", equalTo("Fornavn"))
+                .body("lName", equalTo("Efternavn"));
     }
 }

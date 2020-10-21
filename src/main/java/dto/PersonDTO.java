@@ -13,8 +13,6 @@ public class PersonDTO {
     private Set<Phone> phoneNumbers;
     private String email;
     private String street;
-    private String zipCode;
-    private String city;
 
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
@@ -23,9 +21,7 @@ public class PersonDTO {
         this.email = p.getEmail();
         this.id = p.getId();
         if (p.getAddress() != null) {
-            this.street = street;
-            this.zipCode = zipCode;
-            this.city = city;
+            this.street = p.getAddress().getStreet();
         }
     }
 
@@ -80,22 +76,6 @@ public class PersonDTO {
         this.street = street;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -119,7 +99,4 @@ public class PersonDTO {
         }
         return true;
     }
-
-        
-    
 }

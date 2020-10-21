@@ -2,9 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.AddressDTO;
 import dto.PersonDTO;
-import entities.Address;
-import entities.Hobby;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
@@ -26,7 +25,7 @@ public class PersonResource {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
@@ -46,15 +45,14 @@ public class PersonResource {
         return gson.toJson(facade.getPerson(id));
     }
     
-//    @POST
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public String addPerson(String person) {
-//       PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
-//       Address address = new Address(pDTO.getStreet());
-//       Hobby hobby = new Hobby(pDTO);
-//       return gson.toJson(pAdded);
-//    } 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String addPerson(String info) {
+       PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
+       AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
+       return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity()));
+    } 
     
 //    
 //    @Path("hobby/{hobby}")

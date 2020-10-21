@@ -24,17 +24,13 @@ import javax.persistence.OneToMany;
 @Entity
 public class CityInfo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "city_info_id")
-    private Long id;
     @Column(name = "zip_code")
     private String zipCode;
     @Column(name = "city")
     private String city;
     
-    @OneToMany(mappedBy = "cityInfo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "cityInfo", cascade = {CascadeType.MERGE})
     private Set<Address> addresses = new HashSet();
 
     public CityInfo() {
@@ -43,14 +39,6 @@ public class CityInfo implements Serializable {
     public CityInfo(String zipCode, String city) {
         this.zipCode = zipCode;
         this.city = city;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getZipCode() {
@@ -78,7 +66,4 @@ public class CityInfo implements Serializable {
         a.setCityInfo(this);
         this.addresses.add(a);
     }
-
-    
-    
 }
