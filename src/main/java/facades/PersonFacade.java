@@ -5,6 +5,7 @@ import dto.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
+import entities.Phone;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -62,24 +63,28 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
             
         Address address = new Address(street, additionalInfo);
-        Person p = new Person(email, firstName, lastName, address);
-        if(phones != null) {
+        Phone phone = new Phone(phones, phoneDescs);
+        
+        Person realPerson = new Person(email, firstName, lastName, address, phone);
+       
+        /*if(phones != null) {
             String[] phoneSplit = phones.split(",");
             String[] phoneDescSplit = phoneDescs.split(",");
            
             for (int i = 0; i < phoneSplit.length - 1; i++) {
                 p.addPhone(phoneSplit[i], phoneDescSplit[i]);  
             }
-        }
+        }*/
         try {
             CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if(cityInfo != null) {
                 address.setCityInfo(cityInfo);
             }
+       
             em.getTransaction().begin();
-            em.persist(p);
+            em.persist(realPerson);
             em.getTransaction().commit();
-            return new PersonDTO(p);
+            return new PersonDTO(realPerson);
         } finally {
             em.close();
         }
