@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.AddressDTO;
 import dto.PersonDTO;
+import dto.PhoneDTO;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
@@ -52,7 +53,8 @@ public class PersonResource {
     public String addPerson(String info) {
        PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
        AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
-       return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity()));
+       PhoneDTO phDTO = gson.fromJson(info, PhoneDTO.class);
+       return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), phDTO.getNumber(), phDTO.getDescription(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity()));
     } 
     
 //    

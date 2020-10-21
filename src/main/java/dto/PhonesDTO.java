@@ -4,23 +4,25 @@ package dto;
 import entities.Person;
 import entities.Phone;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PhonesDTO {
     
-    List<PhoneDTO> all = new ArrayList();
+    Set<PhoneDTO> all = new HashSet();
     
-    public PhonesDTO(List<Phone> phoneEntities) {
+    public PhonesDTO(Set<Phone> phoneEntities) {
         phoneEntities.forEach((p) -> {
             all.add(new PhoneDTO(p));
         });
     }
 
-    public List<PhoneDTO> getAll() {
+    public Set<PhoneDTO> getAll() {
         return all;
     }
 
-    public void setAll(List<PhoneDTO> all) {
+    public void setAll(Set<PhoneDTO> all) {
         this.all = all;
     }
     
