@@ -49,19 +49,26 @@ public class Person implements Serializable {
     @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Hobby> hobbies;
     
-    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Phone> phoneNumbers;
+    //@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "phone_id")
+    private Phone phone;
 
     public Person() {
     }
 
-    public Person(String email, String firstName, String lastName, Address address) {
+    public Person(String email, String firstName, String lastName, Address address, Phone phone) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
+        this.phone = phone;
     }
 
+    public Phone getPhoneNumbers() {
+        return phone;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -98,13 +105,19 @@ public class Person implements Serializable {
         return address;
     }
 
+    public Phone getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
+
     public Set<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public Set<Phone> getPhoneNumbers() {
-        return phoneNumbers;
-    }
+    
     
     public void addAddress(Address address) {
         if(address != null) {
@@ -115,11 +128,6 @@ public class Person implements Serializable {
         }
     }
     
-    public void addPhone(String number, String description) {
-        Phone phone = new Phone(number, description);
-        phone.setPerson(this);
-        this.phoneNumbers.add(phone);
-    }
     
     public void addHobby(String name, String description) {
         Hobby hobby = new Hobby(name, description);

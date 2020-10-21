@@ -11,6 +11,7 @@ public class PersonDTO {
     private String fName;
     private String lName;
     private Set<Phone> phoneNumbers;
+    private Phone phones;
     private String email;
     private String street;
     private String city;
@@ -20,8 +21,8 @@ public class PersonDTO {
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
         this.lName = p.getLastName();
-        if(this.phoneNumbers != null) {
-            this.phoneNumbers = p.getPhoneNumbers();
+        if(this.phones != null) {
+            this.phones = p.getPhoneNumbers();
         }
         this.email = p.getEmail();
         this.id = p.getId();

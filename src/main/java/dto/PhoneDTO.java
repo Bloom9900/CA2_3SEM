@@ -17,12 +17,7 @@ public class PhoneDTO {
         this.id = p.getId();
         this.number = p.getNumber();
         this.description = p.getDescription();
-        if(p.getPerson() != null) {
-            this.email = p.getPerson().getEmail();
-            this.fName = p.getPerson().getFirstName();
-            this.lName = p.getPerson().getLastName();
-            this.address = p.getPerson().getAddress();
-        }
+      
     }
 
     public PhoneDTO() {

@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -34,10 +35,16 @@ public class Phone implements Serializable {
     @Column(name = "description")
     private String description;
     
+    /*
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "number")
+    private Set<Person> persons = new HashSet();
+    
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "phone_id")
     private Person person;
-
+    */
+    
     public Phone() {
     }
 
@@ -73,15 +80,14 @@ public class Phone implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Person getPerson() {
-        return person;
-    }
     
-    public void setPerson(Person p) {
-        this.person = p;
+    /*
+    public Set<Person> getPersons() {
+        return persons;
     }
 
-    
-    
+    public void addPerson(Person p) {
+        this.persons.add(p);
+    }
+    */
 }
