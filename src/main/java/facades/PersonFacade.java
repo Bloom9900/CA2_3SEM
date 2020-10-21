@@ -73,4 +73,35 @@ public class PersonFacade {
             em.close();
         }
     }
+    
+     public PersonDTO editPerson(PersonDTO p) throws Exception {
+        if ((p.getfName().length() == 0) || (p.getlName().length() == 0)){
+           throw new Exception("First Name and/or Last Name is missing"); 
+        }
+        EntityManager em = getEntityManager();
+        
+        try {
+            em.getTransaction().begin();
+                Person person = em.find(Person.class, p.getId());
+                if (person == null) {
+                    throw new Exception(String.format("Person with id: (%d) not found", p.getId()));
+                } else {
+                    person.setEmail(p.getEmail());
+                    person.setFirstName(p.getfName());
+                    person.setLastName(p.getlName());
+                    person.getAddress().setStreet(p.getStreet());
+                    person.getAddress().setAdditionalInfo(p.getAdditionalInfo());
+                    person.getAddress().getCityInfo().setCity(p.getCity());
+                    person.getAddress().getCityInfo().setZipCode(p.getZipCode());
+                    // ToDo: 
+                    // Implement phone edit + hobby edit.
+                }
+                em.getTransaction().commit();
+                return new PersonDTO(person);
+        } finally {  
+          em.close();
+        }
+        
+        
+    }
 }

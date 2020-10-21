@@ -15,6 +15,7 @@ public class PersonDTO {
     private String street;
     private String city;
     private String zipCode;
+    private String additionalInfo;
 
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
@@ -79,6 +80,32 @@ public class PersonDTO {
     public String getStreet() {
         return street;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+    
+    
 
     public void setStreet(String street) {
         this.street = street;
