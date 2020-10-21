@@ -13,18 +13,26 @@ public class PersonDTO {
     private Set<Phone> phoneNumbers;
     private String email;
     private String street;
+    private String city;
+    private String zipCode;
 
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
         this.lName = p.getLastName();
-        this.phoneNumbers = p.getPhoneNumbers();
+        if(this.phoneNumbers != null) {
+            this.phoneNumbers = p.getPhoneNumbers();
+        }
         this.email = p.getEmail();
         this.id = p.getId();
         if (p.getAddress() != null) {
             this.street = p.getAddress().getStreet();
+            if(p.getAddress().getCityInfo() != null) {
+                this.city = p.getAddress().getCityInfo().getCity();
+                this.zipCode = p.getAddress().getCityInfo().getZipCode();
+            }
         }
     }
-
+    
     public PersonDTO() {
     }
 
