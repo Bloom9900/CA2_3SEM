@@ -5,6 +5,8 @@ import dto.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -56,10 +58,20 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO addPerson(String email, String firstName, String lastName, String street, String additionalInfo, String zipCode, String city) {
+    public PersonDTO addPerson(String email, String firstName, String lastName, String phones, String phoneDescs, String street, String additionalInfo, String zipCode, String city) {
         EntityManager em = emf.createEntityManager();
+            
         Address address = new Address(street, additionalInfo);
         Person p = new Person(email, firstName, lastName, address);
+        if(phones != null) {
+           String[] phoneSplit = phones.split(",");
+           String[] phoneDescSplit = phoneDescs.split(",");
+           
+            for (int i = 0; i < phoneSplit.length - 1; i++) {
+                p.addPhone(phoneSplit[i], phoneDescSplit[i]);
+                
+            }
+        }
         try {
             CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if(cityInfo != null) {
@@ -104,4 +116,6 @@ public class PersonFacade {
         
         
     }
+     
+     
 }
