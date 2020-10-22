@@ -67,7 +67,8 @@ public class PersonFacade {
         
         Person realPerson = new Person(email, firstName, lastName, address);
         
-         realPerson.addPhone(phones, phoneDescs);
+        
+         realPerson.addPhone(phone);
        
         /*if(phones != null) {
             String[] phoneSplit = phones.split(",");

@@ -2,6 +2,7 @@ package dto;
 
 import entities.Person;
 import entities.Phone;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public class PersonDTO {
     private Long id;
     private String fName;
     private String lName;
-    private Set<Phone> phoneNumbers;
+    private Set<Phone> phoneNumbers = new HashSet();
     private String email;
     private String street;
     private String city;
@@ -22,6 +23,7 @@ public class PersonDTO {
         this.lName = p.getLastName();
         if(this.phoneNumbers != null) {
             this.phoneNumbers = p.getPhoneNumbers();
+          
         }
         this.email = p.getEmail();
         this.id = p.getId();

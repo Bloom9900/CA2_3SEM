@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,10 +44,10 @@ public class Person implements Serializable {
     private Address address;
     
     @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Hobby> hobbies;
+    private Set<Hobby> hobbies = new HashSet();
     
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Phone> phoneNumbers;
+    private Set<Phone> phoneNumbers = new HashSet();
     
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "phone_id")
@@ -122,12 +123,22 @@ public class Person implements Serializable {
             this.address = null;
         }
     }
+
+    public Phone getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
     
-    public void addPhone(String number, String description) {
+    
+    public void addPhone(Phone phone) {
         
-        Phone phone = new Phone(number, description);
-      //  phone.setPerson(this);
         this.phoneNumbers.add(phone);
+        this.setPhone(phone);
+        phone.setPerson(this);
+       
     }
     
     public void addHobby(String name, String description) {
