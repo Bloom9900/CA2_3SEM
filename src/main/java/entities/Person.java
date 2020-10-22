@@ -55,14 +55,6 @@ public class Person implements Serializable {
 
     public Person() {
     }
-
-    public Person(String email, String firstName, String lastName, Address address, Phone phone) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phone = phone;
-    }
     
     public Person(String email, String firstName, String lastName, Address address) {
         this.email = email;

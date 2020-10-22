@@ -34,21 +34,17 @@ import org.junit.jupiter.api.Test;
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
 public class PersonResourceTest {
-/*
+
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
     private static Address a1 = new Address("Strandparken 2A", "");
-    private static Phone phone1 = new Phone("123", "A number");
-    private static Person p1 = new Person("cph-jm312@cphbusiness.dk", "Jannich", "Højmose", a1, phone1);
+    private static Person p1 = new Person("cph-jm312@cphbusiness.dk", "Jannich", "Højmose", a1);
     private static Address a2 = new Address("Egevangen 4", "");
-    private static Phone phone2 = new Phone("1234", "A number");
-    private static Person p2 = new Person("cph-db145@cphbusiness.dk", "Daniel", "Bengtsen", a2, phone2);
+    private static Person p2 = new Person("cph-db145@cphbusiness.dk", "Daniel", "Bengtsen", a2);
     private static Address a3 = new Address("Gadevang 25", "");
-    private static Phone phone3 = new Phone("12345", "A number");
-    private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3, phone3);
+    private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3);
     private static Address a4 = new Address("Københavnsvej 96", "");
-    private static Phone phone4 = new Phone("123456", "A number");
-    private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4, phone4);
+    private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4);
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -148,10 +144,10 @@ public class PersonResourceTest {
     public void testAddPerson() throws Exception {
          given()
                 .contentType("application/json")
-                 .body(new Person("test@gmail.com", "Jannich", "Højmose", new Address("SecretAddress", "Additional info"), new Phone("123", "A phonenumber")))
+                 .body(new Person("test@gmail.com", "Jannich", "Højmose", new Address("SecretAddress", "Additional info")))
                 .then()
                 .body("email", equalTo("test@gmail.com"))
                 .body("fName", equalTo("Jannich"))
                 .body("lName", equalTo("Højmose"));
-    }*/
+    }
 }
