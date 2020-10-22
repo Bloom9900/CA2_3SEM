@@ -119,16 +119,12 @@ public class PersonFacade {
                     person.getAddress().getCityInfo().setZipCode(p.getZipCode());
                     // ToDo: 
                     // Implement phone edit + hobby edit.
-                    PhonesDTO phones = p.getPhoneNumbers();
+                    PhonesDTO phones = new PhonesDTO(person.getPhoneNumbers());
                     Set<Phone> newPhones = new HashSet();
-                    if(phones != null){
-                        
-                    
                     for(PhoneDTO phone : phones.getAll()){
                        newPhones.add(new Phone(phone.getNumber(), phone.getDescription()));
                     }
                     person.setPhonesNumbers(newPhones);
-                    }
                 }
                 em.getTransaction().commit();
                 return new PersonDTO(person);
