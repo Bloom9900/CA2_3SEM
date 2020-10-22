@@ -2,12 +2,16 @@ package facades;
 
 import dto.PersonDTO;
 import dto.PersonsDTO;
+import dto.PhoneDTO;
+import dto.PhonesDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
 import entities.Phone;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -115,6 +119,16 @@ public class PersonFacade {
                     person.getAddress().getCityInfo().setZipCode(p.getZipCode());
                     // ToDo: 
                     // Implement phone edit + hobby edit.
+                    PhonesDTO phones = p.getPhoneNumbers();
+                    Set<Phone> newPhones = new HashSet();
+                    if(phones != null){
+                        
+                    
+                    for(PhoneDTO phone : phones.getAll()){
+                       newPhones.add(new Phone(phone.getNumber(), phone.getDescription()));
+                    }
+                    person.setPhonesNumbers(newPhones);
+                    }
                 }
                 em.getTransaction().commit();
                 return new PersonDTO(person);

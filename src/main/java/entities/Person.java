@@ -103,6 +103,10 @@ public class Person implements Serializable {
         return phoneNumbers;
     }
     
+    public void setPhonesNumbers(Set<Phone> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
+    }
+    
     public void addAddress(Address address) {
         if(address != null) {
             this.address = address;
