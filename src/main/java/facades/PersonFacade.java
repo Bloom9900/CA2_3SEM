@@ -63,19 +63,19 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
             
         Address address = new Address(street, additionalInfo);
-        Phone phone = new Phone(phones, phoneDescs);
+        //Phone phone = new Phone(phones, phoneDescs);
         
         Person realPerson = new Person(email, firstName, lastName, address);
-        realPerson.addPhone(phone);
+        //realPerson.addPhone(phone);
        
-        /*if(phones != null) {
+        if(phones != null) {
             String[] phoneSplit = phones.split(",");
             String[] phoneDescSplit = phoneDescs.split(",");
            
-            for (int i = 0; i < phoneSplit.length - 1; i++) {
+            for (int i = 0; i < phoneSplit.length; i++) {
                 realPerson.addPhone(new Phone(phoneSplit[i], phoneDescSplit[i]));  
             }
-        }*/
+        }
         try {
             CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if(cityInfo != null) {
