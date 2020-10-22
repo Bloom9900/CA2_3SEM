@@ -23,21 +23,17 @@ import org.junit.jupiter.api.Test;
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
 public class PersonFacadeTest {
-/*
+
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
     private static Address a1 = new Address("Strandparken 2A", "");
-    private static Phone phone1 = new Phone("123", "A number");
-    private static Person p1 = new Person("cph-jm312@cphbusiness.dk", "Jannich", "Højmose", a1, phone1);
+    private static Person p1 = new Person("cph-jm312@cphbusiness.dk", "Jannich", "Højmose", a1);
     private static Address a2 = new Address("Egevangen 4", "");
-    private static Phone phone2 = new Phone("1234", "A number");
-    private static Person p2 = new Person("cph-db145@cphbusiness.dk", "Daniel", "Bengtsen", a2, phone2);
+    private static Person p2 = new Person("cph-db145@cphbusiness.dk", "Daniel", "Bengtsen", a2);
     private static Address a3 = new Address("Gadevang 25", "");
-    private static Phone phone3 = new Phone("12345", "A number");
-    private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3, phone3);
+    private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3);
     private static Address a4 = new Address("Københavnsvej 96", "");
-    private static Phone phone4 = new Phone("123456", "A number");
-    private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4, phone4);
+    private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4);
 
     public PersonFacadeTest() {
     }
@@ -111,8 +107,8 @@ public class PersonFacadeTest {
         String phoneNums = "12345678,87654321";
         String phoneDescs = "Arbejde,Privat";
         PersonDTO result = facade.addPerson(email, fName, lName, phoneNums, phoneDescs, street, additionalInfo, zipCode, city);
-        Person p = new Person(email, fName, lName, new Address(street, additionalInfo), new Phone(phoneNums, phoneDescs));
+        Person p = new Person(email, fName, lName, new Address(street, additionalInfo));
         PersonDTO expected = new PersonDTO(p);
         assertEquals(expected.getEmail(), result.getEmail());
-    }*/
+    }
 }
