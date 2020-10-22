@@ -106,8 +106,13 @@ public class PersonDTO {
         this.additionalInfo = additionalInfo;
     }
     
-    
-
+    /*
+    public void addPhone(String numbers, String description) {
+        Phone number = new Phone(numbers, description);
+        number.setPerson(this);
+        this.phoneNumbers.add(number);
+    }
+*/
     public void setStreet(String street) {
         this.street = street;
     }

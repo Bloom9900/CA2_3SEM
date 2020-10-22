@@ -54,6 +54,7 @@ public class PersonResource {
        PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
        AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
        PhoneDTO phDTO = gson.fromJson(info, PhoneDTO.class);
+       
        return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), phDTO.getNumber(), phDTO.getDescription(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity()));
     } 
     

@@ -62,6 +62,13 @@ public class Person implements Serializable {
         this.address = address;
         this.phone = phone;
     }
+    
+    public Person(String email, String firstName, String lastName, Address address) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
@@ -117,8 +124,9 @@ public class Person implements Serializable {
     }
     
     public void addPhone(String number, String description) {
+        
         Phone phone = new Phone(number, description);
-        phone.setPerson(this);
+      //  phone.setPerson(this);
         this.phoneNumbers.add(phone);
     }
     

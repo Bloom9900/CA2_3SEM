@@ -65,7 +65,9 @@ public class PersonFacade {
         Address address = new Address(street, additionalInfo);
         Phone phone = new Phone(phones, phoneDescs);
         
-        Person realPerson = new Person(email, firstName, lastName, address, phone);
+        Person realPerson = new Person(email, firstName, lastName, address);
+        
+         realPerson.addPhone(phones, phoneDescs);
        
         /*if(phones != null) {
             String[] phoneSplit = phones.split(",");
@@ -80,7 +82,6 @@ public class PersonFacade {
             if(cityInfo != null) {
                 address.setCityInfo(cityInfo);
             }
-       
             em.getTransaction().begin();
             em.persist(realPerson);
             em.getTransaction().commit();

@@ -14,9 +14,11 @@ public class PhoneDTO {
     private Address address;
 
     public PhoneDTO(Phone p) {
+        
         this.id = p.getId();
         this.number = p.getNumber();
         this.description = p.getDescription();
+        
         if(p.getPerson() != null) {
             this.email = p.getPerson().getEmail();
             this.fName = p.getPerson().getFirstName();
