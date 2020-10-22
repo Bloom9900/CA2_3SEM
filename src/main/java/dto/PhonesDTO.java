@@ -11,6 +11,9 @@ import java.util.Set;
 public class PhonesDTO {
     
     Set<PhoneDTO> all = new HashSet();
+
+    public PhonesDTO() {
+    }
     
     public PhonesDTO(Set<Phone> phoneEntities) {
         phoneEntities.forEach((p) -> {

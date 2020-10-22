@@ -134,11 +134,11 @@ public class Person implements Serializable {
     
     
     public void addPhone(Phone phone) {
-        
-        this.phoneNumbers.add(phone);
-        this.setPhone(phone);
-        phone.setPerson(this);
-       
+        if(phone != null) {
+            this.setPhone(phone);
+            phone.setPerson(this);
+            this.phoneNumbers.add(phone);
+        }
     }
     
     public void addHobby(String name, String description) {

@@ -11,7 +11,7 @@ public class PersonDTO {
     private Long id;
     private String fName;
     private String lName;
-    private Set<Phone> phoneNumbers = new HashSet();
+    private PhonesDTO phoneNumbers;
     private String email;
     private String street;
     private String city;
@@ -21,10 +21,7 @@ public class PersonDTO {
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
         this.lName = p.getLastName();
-        if(this.phoneNumbers != null) {
-            this.phoneNumbers = p.getPhoneNumbers();
-          
-        }
+        this.phoneNumbers = new PhonesDTO(p.getPhoneNumbers());
         this.email = p.getEmail();
         this.id = p.getId();
         if (p.getAddress() != null) {
@@ -64,11 +61,11 @@ public class PersonDTO {
         this.lName = lName;
     }
 
-    public Set<Phone> getPhoneNumbers() {
+    public PhonesDTO getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void setPhoneNumbers(Set<Phone> phoneNumbers) {
+    public void setPhoneNumbers(PhonesDTO phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 
