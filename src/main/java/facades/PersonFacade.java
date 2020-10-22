@@ -66,16 +66,14 @@ public class PersonFacade {
         Phone phone = new Phone(phones, phoneDescs);
         
         Person realPerson = new Person(email, firstName, lastName, address);
-        
-        
-         realPerson.addPhone(phone);
+        realPerson.addPhone(phone);
        
         /*if(phones != null) {
             String[] phoneSplit = phones.split(",");
             String[] phoneDescSplit = phoneDescs.split(",");
            
             for (int i = 0; i < phoneSplit.length - 1; i++) {
-                p.addPhone(phoneSplit[i], phoneDescSplit[i]);  
+                realPerson.addPhone(new Phone(phoneSplit[i], phoneDescSplit[i]));  
             }
         }*/
         try {
