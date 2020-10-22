@@ -48,20 +48,8 @@ public class Person implements Serializable {
     
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Phone> phoneNumbers = new HashSet();
-    
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "phone_id")
-    private Phone phone;
 
     public Person() {
-    }
-
-    public Person(String email, String firstName, String lastName, Address address, Phone phone) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phone = phone;
     }
     
     public Person(String email, String firstName, String lastName, Address address) {
@@ -123,19 +111,9 @@ public class Person implements Serializable {
             this.address = null;
         }
     }
-
-    public Phone getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Phone phone) {
-        this.phone = phone;
-    }
-    
     
     public void addPhone(Phone phone) {
         if(phone != null) {
-            this.setPhone(phone);
             phone.setPerson(this);
             this.phoneNumbers.add(phone);
         }

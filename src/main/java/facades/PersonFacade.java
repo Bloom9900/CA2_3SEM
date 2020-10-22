@@ -73,7 +73,11 @@ public class PersonFacade {
             String[] phoneDescSplit = phoneDescs.split(",");
            
             for (int i = 0; i < phoneSplit.length; i++) {
-                realPerson.addPhone(new Phone(phoneSplit[i], phoneDescSplit[i]));  
+                if(phoneDescSplit.length > i) {
+                    realPerson.addPhone(new Phone(phoneSplit[i], phoneDescSplit[i]));
+                } else {
+                    realPerson.addPhone(new Phone(phoneSplit[i], "no description"));
+                }
             }
         }
         try {
