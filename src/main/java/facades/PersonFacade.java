@@ -79,18 +79,17 @@ public class PersonFacade {
         //addP(realPerson, phones, phoneDescs, Phone.class);
         //addP(realPerson, hobbies, hobbyDescs, Hobby.class);
         if (phones != null) {
+            
             String[] aSplit = phones.split(",");
-            String[] descSplit = phoneDescs.split(",");
+            String[] descSplit = phoneDescs.split(",");         
 
             for (int i = 0; i < aSplit.length; i++) {
                 if (descSplit.length > i) {
-                    realPerson.addPhone(new Phone(aSplit[i], descSplit[i]));
+                    realPerson.addPhone(new Phone(aSplit[i].trim(), descSplit[i].trim()));
                 } else {
-                    realPerson.addPhone(new Phone(aSplit[i], "No description"));
-
+                    realPerson.addPhone(new Phone(aSplit[i].trim(), "No description"));
                 }
             }
-
         }
 
         if (hobbies != null) {
@@ -99,10 +98,9 @@ public class PersonFacade {
 
             for (int i = 0; i < hSplit.length; i++) {
                 if (hDescSplit.length > i) {
-                    realPerson.addHobby(new Hobby(hSplit[i], hDescSplit[i]));
+                    realPerson.addHobby(new Hobby(hSplit[i].trim(), hDescSplit[i].trim()));
                 } else {
-                    realPerson.addHobby(new Hobby(hSplit[i], "No description"));
-
+                    realPerson.addHobby(new Hobby(hSplit[i].trim(), "No description"));
                 }
             }
 
@@ -180,10 +178,10 @@ public class PersonFacade {
 
         }
     }
-    
+
     // Get all persons with a given hobby
 
-   /* public PersonsDTO getPersonByHobby(PersonDTO pDTO, Person p) {
+    /* public PersonsDTO getPersonByHobby(PersonDTO pDTO, Person p) {
         //String test = "";
         /*  CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if (cityInfo != null) {
@@ -191,7 +189,7 @@ public class PersonFacade {
             }*//*
         EntityManager em = emf.createEntityManager();
         /*Hobby hobbyData = em.find(Hobby.class, hobbyName);
-       *//*
+     *//*
          try {
             if (pDTO.getHobbies().equals(p.getHobbies())) {
             return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());   
@@ -201,8 +199,8 @@ public class PersonFacade {
         }
          return null;
     }
-*/
-    
+     */
+
     public PersonsDTO getPersonByHobby(String hobbyName) throws Exception {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -211,12 +209,11 @@ public class PersonFacade {
         List<Hobby> hobbyList = hobbyQuery.getResultList();
         try {
             if (hobbyList != null) {
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbies", Person.class);
-            query.setParameter("hobbies", hobbyName);
-            List<Person> persons = query.getResultList(); 
-            return new PersonsDTO(persons);
-            }
-            else {
+                TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbies", Person.class);
+                query.setParameter("hobbies", hobbyName);
+                List<Person> persons = query.getResultList();
+                return new PersonsDTO(persons);
+            } else {
                 throw new Exception(String.format("Hobby with name: (%s) not found", hobbyName));
             }
         } finally {
