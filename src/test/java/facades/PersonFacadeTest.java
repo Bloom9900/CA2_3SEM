@@ -96,7 +96,7 @@ public class PersonFacadeTest {
     
     @Disabled
     @Test
-    public void testAddPerson() {
+    public void testAddPerson() throws Exception {
         String email = "test@gmail.com";
         String fName = "Test";
         String lName = "Tester";
