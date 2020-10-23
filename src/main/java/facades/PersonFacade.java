@@ -78,34 +78,48 @@ public class PersonFacade {
 
         //addP(realPerson, phones, phoneDescs, Phone.class);
         //addP(realPerson, hobbies, hobbyDescs, Hobby.class);
-        if (phones != null) {
-            
-            String[] aSplit = phones.split(",");
-            String[] descSplit = phoneDescs.split(",");         
-
-            for (int i = 0; i < aSplit.length; i++) {
-                if (descSplit.length > i) {
-                    realPerson.addPhone(new Phone(aSplit[i].trim(), descSplit[i].trim()));
-                } else {
-                    realPerson.addPhone(new Phone(aSplit[i].trim(), "No description"));
-                }
-            }
-        }
-
-        if (hobbies != null) {
-            String[] hSplit = hobbies.split(",");
-            String[] hDescSplit = hobbyDescs.split(",");
-
-            for (int i = 0; i < hSplit.length; i++) {
-                if (hDescSplit.length > i) {
-                    realPerson.addHobby(new Hobby(hSplit[i].trim(), hDescSplit[i].trim()));
-                } else {
-                    realPerson.addHobby(new Hobby(hSplit[i].trim(), "No description"));
-                }
-            }
-
-        }
         try {
+            if (phones != null) {
+
+                String[] aSplit = phones.split(",");
+                String[] descSplit = phoneDescs.split(",");
+
+                for (int i = 0; i < aSplit.length; i++) {
+                    if (descSplit.length > i) {
+                        realPerson.addPhone(new Phone(aSplit[i].trim(), descSplit[i].trim()));
+                    } else {
+                        realPerson.addPhone(new Phone(aSplit[i].trim(), "No description"));
+                    }
+                }
+            }
+
+            if (hobbies != null) {
+                String[] hSplit = hobbies.split(",");
+                String[] hDescSplit = hobbyDescs.split(",");
+
+                for (int i = 0; i < hSplit.length; i++) {
+                    TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyNames", Hobby.class);
+                    hobbyQuery.setParameter("hobbyNames", hSplit[i].trim().toLowerCase());
+                    Hobby hobby = new Hobby();
+                    
+                    if (!hobbyQuery.getResultList().isEmpty()) {
+                    hobby = (Hobby) hobbyQuery.getSingleResult();
+                    }
+                    if (hDescSplit.length > i) {
+                        if (hSplit[i].trim().toLowerCase().equals(hobby.getName())) {
+                            realPerson.addHobby(hobby);
+                        } else {
+                            realPerson.addHobby(new Hobby(hSplit[i].trim().toLowerCase(), hDescSplit[i].trim()));
+                        }
+                    } else {
+                        if (hSplit[i].trim().toLowerCase().equals(hobby.getName())) {
+                            realPerson.addHobby(hobby);
+                        } else {
+                            realPerson.addHobby(new Hobby(hSplit[i].trim().toLowerCase(), "No description"));
+                        }
+                    }
+                }
+            }
             CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if (cityInfo != null) {
                 address.setCityInfo(cityInfo);
