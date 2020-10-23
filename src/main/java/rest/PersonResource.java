@@ -60,14 +60,13 @@ public class PersonResource {
        return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), phDTO.getpNumbers(), phDTO.getpDescription(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity(), hDTO.gethNames(), hDTO.gethDescription()));
     } 
     
-//    
-//    @Path("hobby/{hobby}")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getPersonByHobby(@PathParam("hobby") String hobby) {
-//       // return gson.toJson(facade.getPersonByHobby(hobby));
-//        return "{\"msg\":\"Test\"}";
-//    }
+    
+    @Path("hobby/{hobby}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPersonByHobby(@PathParam("hobby") String hobby) throws Exception {
+        return gson.toJson(facade.getPersonByHobby(hobby));
+    }
 //    
 //    @Path("city/{city}")
 //    @GET

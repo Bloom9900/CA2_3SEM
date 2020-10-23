@@ -1,5 +1,6 @@
 package facades;
 
+import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import dto.PhoneDTO;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -177,5 +180,47 @@ public class PersonFacade {
 
         }
     }
+    
+    // Get all persons with a given hobby
 
+   /* public PersonsDTO getPersonByHobby(PersonDTO pDTO, Person p) {
+        //String test = "";
+        /*  CityInfo cityInfo = em.find(CityInfo.class, zipCode);
+            if (cityInfo != null) {
+                address.setCityInfo(cityInfo);
+            }*//*
+        EntityManager em = emf.createEntityManager();
+        /*Hobby hobbyData = em.find(Hobby.class, hobbyName);
+       *//*
+         try {
+            if (pDTO.getHobbies().equals(p.getHobbies())) {
+            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());   
+            }
+        } finally {
+            em.close();
+        }
+         return null;
+    }
+*/
+    
+    public PersonsDTO getPersonByHobby(String hobbyName) throws Exception {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobby", Hobby.class);
+        hobbyQuery.setParameter("hobby", hobbyName);
+        List<Hobby> hobbyList = hobbyQuery.getResultList();
+        try {
+            if (hobbyList != null) {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbies", Person.class);
+            query.setParameter("hobbies", hobbyName);
+            List<Person> persons = query.getResultList(); 
+            return new PersonsDTO(persons);
+            }
+            else {
+                throw new Exception(String.format("Hobby with name: (%s) not found", hobbyName));
+            }
+        } finally {
+            em.close();
+        }
+    }
 }
