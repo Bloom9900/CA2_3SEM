@@ -65,17 +65,16 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getPersonByHobby(@PathParam("hobby") String hobby) throws Exception {
-        return gson.toJson(facade.getPersonByHobby(hobby));
+        return gson.toJson(facade.getPersonsByHobby(hobby));
     }
-//    
-//    @Path("city/{city}")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getPhoneNumberByCity(@PathParam("city") String city) {
-//     //   return gson.toJson(facade.getPhoneNumberByCity(city));
-//     return "{\"msg\":\"Hello World\"}";
-//    }
-//    
+    
+    @Path("city/{city}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPhoneNumberByCity(@PathParam("city") String city) throws Exception {
+        return gson.toJson(facade.getPersonsByCity(city));
+    }
+    
     @PUT
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})

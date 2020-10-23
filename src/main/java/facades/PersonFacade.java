@@ -80,10 +80,11 @@ public class PersonFacade {
 
         try {
             if (phones != null) {
-
                 String[] aSplit = phones.split(",");
-                String[] descSplit = phoneDescs.split(",");
-
+                String[] descSplit = {""};
+                if(phoneDescs != null) {
+                    descSplit = phoneDescs.split(",");
+                }
                 for (int i = 0; i < aSplit.length; i++) {
                     TypedQuery<Phone> phoneQuery = em.createQuery("SELECT p FROM Phone p WHERE p.number = :numbers", Phone.class);
                     phoneQuery.setParameter("numbers", aSplit[i].trim());
@@ -110,7 +111,10 @@ public class PersonFacade {
 
             if (hobbies != null) {
                 String[] hSplit = hobbies.split(",");
-                String[] hDescSplit = hobbyDescs.split(",");
+                String[] hDescSplit = {""};
+                if(hobbyDescs != null) {
+                    hDescSplit = hobbyDescs.split(",");
+                }
 
                 for (int i = 0; i < hSplit.length; i++) {
                     TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyNames", Hobby.class);
@@ -226,29 +230,7 @@ public class PersonFacade {
         }
     }
 
-    // Get all persons with a given hobby
-
-    /* public PersonsDTO getPersonByHobby(PersonDTO pDTO, Person p) {
-        //String test = "";
-        /*  CityInfo cityInfo = em.find(CityInfo.class, zipCode);
-            if (cityInfo != null) {
-                address.setCityInfo(cityInfo);
-            }*//*
-        EntityManager em = emf.createEntityManager();
-        /*Hobby hobbyData = em.find(Hobby.class, hobbyName);
-     *//*
-         try {
-            if (pDTO.getHobbies().equals(p.getHobbies())) {
-            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());   
-            }
-        } finally {
-            em.close();
-        }
-         return null;
-    }
-     */
-
-    public PersonsDTO getPersonByHobby(String hobbyName) throws Exception {
+    public PersonsDTO getPersonsByHobby(String hobbyName) throws Exception {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobby", Hobby.class
@@ -264,6 +246,26 @@ public class PersonFacade {
                 return new PersonsDTO(persons);
             } else {
                 throw new Exception(String.format("Hobby with name: (%s) not found", hobbyName));
+            }
+        } finally {
+            em.close();
+        }
+    }
+    
+    public PersonsDTO getPersonsByCity(String cityName) throws Exception {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        TypedQuery<CityInfo> cityInfoQuery = em.createQuery("SELECT ci FROM CityInfo ci WHERE ci.city = :cityName", CityInfo.class);
+        cityInfoQuery.setParameter("cityName", cityName);
+        List<CityInfo> cityInfoList = cityInfoQuery.getResultList();
+        try {
+            if (cityInfoList != null) {
+                TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.address a WHERE a.cityInfo.city = :cityName", Person.class);
+                query.setParameter("cityName", cityName);
+                List<Person> persons = query.getResultList();
+                return new PersonsDTO(persons);
+            } else {
+                throw new Exception(String.format("City with name: (%s) not found", cityInfoQuery));
             }
         } finally {
             em.close();
