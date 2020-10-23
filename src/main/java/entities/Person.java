@@ -123,9 +123,15 @@ public class Person implements Serializable {
         }
     }
     
-    public void addHobby(String name, String description) {
-        Hobby hobby = new Hobby(name, description);
-        hobby.addPerson(this);
-        this.hobbies.add(hobby);
+    public void addHobby(Hobby hobby) {
+        if(hobby != null) {
+            hobby.addPerson(this);
+            this.hobbies.add(hobby);
+        }
     }
+
+    public void setHobbies(Set<Hobby> hobbies) {
+        this.hobbies = hobbies;
+    }
+    
 }

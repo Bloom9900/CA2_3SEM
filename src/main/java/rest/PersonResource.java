@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.AddressDTO;
+import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PhoneDTO;
 import utils.EMF_Creator;
@@ -54,8 +55,9 @@ public class PersonResource {
        PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
        AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
        PhoneDTO phDTO = gson.fromJson(info, PhoneDTO.class);
+       HobbyDTO hDTO = gson.fromJson(info, HobbyDTO.class);
        
-       return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), phDTO.getNumber(), phDTO.getDescription(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity()));
+       return gson.toJson(facade.addPerson(pDTO.getEmail(), pDTO.getfName(), pDTO.getlName(), phDTO.getpNumbers(), phDTO.getpDescription(), aDTO.getStreet(), aDTO.getAdditionalInfo(), aDTO.getZipCode(), aDTO.getCity(), hDTO.gethNames(), hDTO.gethDescription()));
     } 
     
 //    

@@ -5,31 +5,31 @@ import entities.Address;
 import entities.Phone;
 
 public class PhoneDTO {
-    private String number;
-    private String description;
+    private String pNumbers;
+    private String pDescription;
 
     public PhoneDTO(Phone p) { 
-        this.number = p.getNumber();
-        this.description = p.getDescription();
+        this.pNumbers = p.getNumber();
+        this.pDescription = p.getDescription();
     }
 
     public PhoneDTO() {
     }
 
-    public String getNumber() {
-        return number;
+    public String getpNumbers() {
+        return pNumbers;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setpNumbers(String pNumbers) {
+        this.pNumbers = pNumbers;
     }
 
-    public String getDescription() {
-        return description;
+    public String getpDescription() {
+        return pDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setpDescription(String pDescription) {
+        this.pDescription = pDescription;
     }
     
     

@@ -17,6 +17,7 @@ public class PersonDTO {
     private String city;
     private String zipCode;
     private String additionalInfo;
+    private HobbiesDTO hobbies;
 
     public PersonDTO(Person p) {
         this.fName = p.getFirstName();
@@ -31,6 +32,7 @@ public class PersonDTO {
                 this.zipCode = p.getAddress().getCityInfo().getZipCode();
             }
         }
+        this.hobbies = new HobbiesDTO(p.getHobbies());
         
     }
     
@@ -117,6 +119,16 @@ public class PersonDTO {
     public void setStreet(String street) {
         this.street = street;
     }
+
+    public HobbiesDTO getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(HobbiesDTO hobbies) {
+        this.hobbies = hobbies;
+    }
+    
+    
 
     @Override
     public boolean equals(Object obj) {

@@ -106,7 +106,9 @@ public class PersonFacadeTest {
         String city = "TestCity";
         String phoneNums = "12345678,87654321";
         String phoneDescs = "Arbejde,Privat";
-        PersonDTO result = facade.addPerson(email, fName, lName, phoneNums, phoneDescs, street, additionalInfo, zipCode, city);
+        String hobbyNames = "Dans,Taekwondo";
+        String hobbyDescs = "testDescs";
+        PersonDTO result = facade.addPerson(email, fName, lName, phoneNums, phoneDescs, street, additionalInfo, zipCode, city, hobbyNames, hobbyDescs);
         Person p = new Person(email, fName, lName, new Address(street, additionalInfo));
         PersonDTO expected = new PersonDTO(p);
         assertEquals(expected.getEmail(), result.getEmail());
