@@ -51,7 +51,7 @@ public class PersonResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addPerson(String info) {
+    public String addPerson(String info) throws Exception {
        PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
        AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
        PhoneDTO phDTO = gson.fromJson(info, PhoneDTO.class);
