@@ -1,5 +1,6 @@
 package facades;
 
+import dto.CityInfosDTO;
 import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
@@ -50,16 +51,30 @@ public class PersonFacade {
     }
 
     public PersonsDTO getAllPersons() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
         } finally {
             em.close();
         }
     }
+    
+    public CityInfosDTO getAllCityInfos() {
+        EntityManager em = getEntityManager();
+        try {
+            List<CityInfo> ciList = em.createNamedQuery("CityInfo.getAllRows").getResultList();
+            Set<CityInfo> ciSet = new HashSet();
+            for(CityInfo ci : ciList) {
+                ciSet.add(ci);
+            }
+            return new CityInfosDTO(ciSet);
+        } finally {
+            em.close();
+        }   
+    }
 
     public PersonDTO getPerson(Long id) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             return new PersonDTO(em.find(Person.class, id));
         } finally {
@@ -68,7 +83,7 @@ public class PersonFacade {
     }
 
     public PersonDTO addPerson(String email, String firstName, String lastName, String phones, String phoneDescs, String street, String additionalInfo, String zipCode, String city, String hobbies, String hobbyDescs) throws Exception {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
 
         Address address = new Address(street, additionalInfo);
 
@@ -181,12 +196,12 @@ public class PersonFacade {
                 person.getAddress().getCityInfo().setZipCode(p.getZipCode());
                 // ToDo: 
                 // Implement phone edit + hobby edit.
-                PhonesDTO phones = new PhonesDTO(person.getPhoneNumbers());
+                /*PhonesDTO phones = new PhonesDTO(person.getPhoneNumbers());
                 Set<Phone> newPhones = new HashSet();
                 for (PhoneDTO phone : phones.getAll()) {
                     newPhones.add(new Phone(phone.getpNumbers(), phone.getpDescription()));
                 }
-                person.setPhonesNumbers(newPhones);
+                person.setPhonesNumbers(newPhones);*/
             }
             em.getTransaction().commit();
             return new PersonDTO(person);
@@ -197,7 +212,7 @@ public class PersonFacade {
     }
 
     public PersonsDTO getPersonsByHobby(String hobbyName) throws Exception {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         em.getTransaction().begin();
         TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobby", Hobby.class
         );
@@ -219,7 +234,7 @@ public class PersonFacade {
     }
     
     public PersonsDTO getPersonsByCity(String cityName) throws Exception {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         em.getTransaction().begin();
         TypedQuery<CityInfo> cityInfoQuery = em.createQuery("SELECT ci FROM CityInfo ci WHERE ci.city = :cityName", CityInfo.class);
         cityInfoQuery.setParameter("cityName", cityName);

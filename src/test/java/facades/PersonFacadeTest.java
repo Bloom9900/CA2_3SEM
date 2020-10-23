@@ -1,6 +1,8 @@
 package facades;
 
 
+import dto.CityInfoDTO;
+import dto.CityInfosDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
 import entities.Address;
@@ -34,6 +36,11 @@ public class PersonFacadeTest {
     private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3);
     private static Address a4 = new Address("Københavnsvej 96", "");
     private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4);
+    
+    private static CityInfo ci1 = new CityInfo("2990", "Nivå");
+    private static CityInfo ci2 = new CityInfo("8210", "Aarhus");
+    private static CityInfo ci3 = new CityInfo("4140", "Borup");
+    
 
     public PersonFacadeTest() {
     }
@@ -58,6 +65,16 @@ public class PersonFacadeTest {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNativeQuery
+                ("INSERT INTO CITYINFO (zip_code, city) VALUES (?, ?),(?, ?),(?, ?)")
+                .setParameter(1, ci1.getZipCode())
+                .setParameter(2, ci1.getCity())
+                .setParameter(3, ci2.getZipCode())
+                .setParameter(4, ci2.getCity())
+                .setParameter(5, ci3.getZipCode())
+                .setParameter(6, ci3.getCity())
+                .executeUpdate();
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -86,6 +103,19 @@ public class PersonFacadeTest {
         PersonDTO p4DTO = new PersonDTO(p4);
         assertThat(result.getAll(), containsInAnyOrder(p1DTO, p2DTO, p3DTO, p4DTO));
     }
+    
+    @Test
+    public void testGetAllCityInfos() {
+        int expResult = 3;
+        CityInfosDTO result = facade.getAllCityInfos();
+        assertEquals(expResult, result.getAll().size());
+        CityInfoDTO ci1DTO = new CityInfoDTO(ci1);
+        CityInfoDTO ci2DTO = new CityInfoDTO(ci2);
+        CityInfoDTO ci3DTO = new CityInfoDTO(ci3);
+        assertThat(result.getAll(), containsInAnyOrder(ci1DTO, ci2DTO, ci3DTO));
+    }
+    
+    
     
     @Test
     public void testGetPerson() {

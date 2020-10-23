@@ -40,6 +40,13 @@ public class PersonResource {
     public String getAllPersons() {
         return gson.toJson(facade.getAllPersons());
     }
+    
+    @Path("all/zipcodes")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getZipCodes() {
+        return gson.toJson(facade.getAllCityInfos());
+    }
 
     @Path("{id}")
     @GET
@@ -86,12 +93,4 @@ public class PersonResource {
         return gson.toJson(pNew);
     }
     
-    /*
-    @Path("zipcodes")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getZipCodes() {
-        return gson.toJson(facade.getZipCodes());
-    }
-    */
 }

@@ -1,14 +1,15 @@
 package rest;
 
 
+import dto.CityInfoDTO;
 import dto.PersonDTO;
 import entities.Address;
+import entities.CityInfo;
 import entities.Person;
 import entities.Phone;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
-import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.net.URI;
 import java.util.Arrays;
@@ -45,6 +46,10 @@ public class PersonResourceTest {
     private static Person p3 = new Person("cph-eg60@cphbusiness.dk", "Emil", "Grønlund", a3);
     private static Address a4 = new Address("Københavnsvej 96", "");
     private static Person p4 = new Person("cph-jp327@cphbusiness.dk", "Jimmy", "Pham", a4);
+    
+    private static CityInfo ci1 = new CityInfo("2990", "Nivå");
+    private static CityInfo ci2 = new CityInfo("8210", "Aarhus");
+    private static CityInfo ci3 = new CityInfo("4140", "Borup");
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -86,6 +91,16 @@ public class PersonResourceTest {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNativeQuery
+                ("INSERT INTO CITYINFO (zip_code, city) VALUES (?, ?),(?, ?),(?, ?)")
+                .setParameter(1, ci1.getZipCode())
+                .setParameter(2, ci1.getCity())
+                .setParameter(3, ci2.getZipCode())
+                .setParameter(4, ci2.getCity())
+                .setParameter(5, ci3.getZipCode())
+                .setParameter(6, ci3.getCity())
+                .executeUpdate();
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -114,7 +129,7 @@ public class PersonResourceTest {
     }
     
     @Test
-    public void testGetAllPersons() throws Exception {
+    public void testGetAllPersons() {
         List<PersonDTO> personsDTO = 
         given()
                 .contentType("application/json")
@@ -128,6 +143,22 @@ public class PersonResourceTest {
         PersonDTO p4DTO = new PersonDTO(p4);
         
         assertThat(personsDTO, containsInAnyOrder(p1DTO, p2DTO, p3DTO, p4DTO));
+    }
+    
+    @Test
+    public void testGetAllCityInfos() {
+        List<CityInfoDTO> cityInfosDTO = 
+        given()
+                .contentType("application/json")
+                .get("/person/all/zipcodes").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("all", CityInfoDTO.class);
+        CityInfoDTO ci1DTO = new CityInfoDTO(ci1);
+        CityInfoDTO ci2DTO = new CityInfoDTO(ci2);
+        CityInfoDTO ci3DTO = new CityInfoDTO(ci3);
+        
+        assertThat(cityInfosDTO, containsInAnyOrder(ci1DTO, ci2DTO, ci3DTO));
     }
     
     @Test

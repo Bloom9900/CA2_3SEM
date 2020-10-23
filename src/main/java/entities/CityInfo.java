@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -22,6 +24,9 @@ import javax.persistence.OneToMany;
  * @author Danie
  */
 @Entity
+@NamedQueries({
+@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo"),
+@NamedQuery(name = "CityInfo.getAllRows", query = "SELECT ci FROM CityInfo ci")})
 public class CityInfo implements Serializable {
 
     @Id
