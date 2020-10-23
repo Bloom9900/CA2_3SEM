@@ -73,9 +73,7 @@ public class PersonFacade {
         Address address = new Address(street, additionalInfo);
 
         Person realPerson = new Person(email, firstName, lastName, address);
-
-        //addP(realPerson, phones, phoneDescs, Phone.class);
-        //addP(realPerson, hobbies, hobbyDescs, Hobby.class);
+        
         List<String> failedNumbers = new ArrayList();
 
         try {
@@ -196,38 +194,6 @@ public class PersonFacade {
             em.close();
         }
 
-    }
-
-    private static void addP(Person person, String desc, String a, Object aObj) {
-        if (a != null) {
-            String[] aSplit = a.split(",");
-            String[] descSplit = desc.split(",");
-
-            for (int i = 0; i < aSplit.length; i++) {
-                if (descSplit.length > i) {
-                    if (aObj.getClass().equals(Phone.class
-                    )) {
-                        person.addPhone(
-                                new Phone(aSplit[i], descSplit[i]));
-                    } else if (aObj.getClass().equals(Hobby.class
-                    )) {
-                        person.addHobby(
-                                new Hobby(aSplit[i], descSplit[i]));
-                    }
-                } else {
-                    if (aObj.getClass().equals(Phone.class
-                    )) {
-                        person.addPhone(
-                                new Phone(aSplit[i], "No description"));
-                    } else if (aObj.getClass().equals(Hobby.class
-                    )) {
-                        person.addHobby(
-                                new Hobby(aSplit[i], "No description"));
-                    }
-                }
-            }
-
-        }
     }
 
     public PersonsDTO getPersonsByHobby(String hobbyName) throws Exception {
