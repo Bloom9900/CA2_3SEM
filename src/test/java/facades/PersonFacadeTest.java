@@ -9,6 +9,9 @@ import entities.Address;
 import entities.CityInfo;
 import entities.Person;
 import entities.Phone;
+import exceptions.DublicateException;
+import exceptions.MissingInputException;
+import exceptions.ObjectNotFoundException;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -93,7 +96,7 @@ public class PersonFacadeTest {
     
     //For at denne test kan virke med assertThat kræver det en equals metode i PersonDTO, ellers kan den ikke sammenligne.
     @Test
-    public void testGetAllPersons() {
+    public void testGetAllPersons() throws ObjectNotFoundException {
         int expResult = 4;
         PersonsDTO result = facade.getAllPersons();
         assertEquals(expResult, result.getAll().size());
@@ -105,7 +108,7 @@ public class PersonFacadeTest {
     }
     
     @Test
-    public void testGetAllCityInfos() {
+    public void testGetAllCityInfos() throws ObjectNotFoundException {
         int expResult = 3;
         CityInfosDTO result = facade.getAllCityInfos();
         assertEquals(expResult, result.getAll().size());
@@ -118,7 +121,7 @@ public class PersonFacadeTest {
     
     
     @Test
-    public void testGetPerson() {
+    public void testGetPerson() throws ObjectNotFoundException {
         PersonDTO result = facade.getPerson(p1.getId());
         PersonDTO expected = new PersonDTO(p1);
         assertEquals(result, expected);
@@ -126,7 +129,7 @@ public class PersonFacadeTest {
     
     @Disabled
     @Test
-    public void testAddPerson() throws Exception {
+    public void testAddPerson() throws MissingInputException, ObjectNotFoundException, DublicateException {
         String email = "test@gmail.com";
         String fName = "Test";
         String lName = "Tester";

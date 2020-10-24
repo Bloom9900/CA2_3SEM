@@ -11,6 +11,9 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import exceptions.MissingInputException;
+import exceptions.DublicateException;
+import exceptions.ObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,16 +53,20 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-    public PersonsDTO getAllPersons() {
+    public PersonsDTO getAllPersons() throws ObjectNotFoundException {
         EntityManager em = getEntityManager();
         try {
-            return new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
+            PersonsDTO allPersons = new PersonsDTO(em.createNamedQuery("Person.getAllRows").getResultList());
+            if(allPersons.getAll().isEmpty() || allPersons == null) {
+                throw new ObjectNotFoundException("No persons found.");
+            }
+            return allPersons;
         } finally {
             em.close();
         }
     }
     
-    public CityInfosDTO getAllCityInfos() {
+    public CityInfosDTO getAllCityInfos() throws ObjectNotFoundException {
         EntityManager em = getEntityManager();
         try {
             List<CityInfo> ciList = em.createNamedQuery("CityInfo.getAllRows").getResultList();
@@ -67,27 +74,65 @@ public class PersonFacade {
             for(CityInfo ci : ciList) {
                 ciSet.add(ci);
             }
+            if(ciSet.isEmpty()) {
+                throw new ObjectNotFoundException("No cities or zipcodes found.");
+            }
             return new CityInfosDTO(ciSet);
         } finally {
             em.close();
         }   
     }
 
-    public PersonDTO getPerson(Long id) {
+    public PersonDTO getPerson(Long id) throws ObjectNotFoundException {
         EntityManager em = getEntityManager();
         try {
-            return new PersonDTO(em.find(Person.class, id));
+            Person p = em.find(Person.class, id);
+            if(p == null) {
+                throw new ObjectNotFoundException(String.format("Person with the provided id: %d not found.", id));
+            }
+            return new PersonDTO(p);
         } finally {
             em.close();
         }
     }
 
-    public PersonDTO addPerson(String email, String firstName, String lastName, String phones, String phoneDescs, String street, String additionalInfo, String zipCode, String city, String hobbies, String hobbyDescs) throws Exception {
+    public PersonDTO addPerson
+        (
+            String email, 
+            String firstName, 
+            String lastName, 
+            String phones, 
+            String phoneDescs, 
+            String street, 
+            String additionalInfo, 
+            String zipCode, 
+            String city, 
+            String hobbies, 
+            String hobbyDescs
+        ) throws MissingInputException, ObjectNotFoundException, DublicateException {
+        
         EntityManager em = getEntityManager();
 
         Address address = new Address(street, additionalInfo);
 
         Person realPerson = new Person(email, firstName, lastName, address);
+        
+        if(street == null || street.isEmpty()) 
+        {
+            throw new MissingInputException("Field \"street\" is required.");
+        } 
+        else if(firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty()) 
+        {
+            throw new MissingInputException("Field \"fName\" AND \"lName\" is required.");
+        } 
+        else if(phones == null || phones.isEmpty()) 
+        {
+            throw new MissingInputException("Field \"pNumbers\" is required.");
+        } 
+        else if(zipCode == null || zipCode.isEmpty()) 
+        {
+            throw new MissingInputException("Field \"zipCode\" is required.");
+        }
         
         List<String> failedNumbers = new ArrayList();
 
@@ -155,6 +200,8 @@ public class PersonFacade {
             CityInfo cityInfo = em.find(CityInfo.class, zipCode);
             if (cityInfo != null) {
                 address.setCityInfo(cityInfo);
+            } else {
+                throw new ObjectNotFoundException(String.format("City with provided zip code: %s not found.", zipCode));
             }
             em.getTransaction().begin();
             em.persist(realPerson);
@@ -165,18 +212,26 @@ public class PersonFacade {
             // In an ideal world, this would be handled separately, so it doesn't hide for other exceptions.
             if (failedNumbers.size() > 0) {
                 String failedNumberResult = "";
+                int count = 1;
                 for (String failedNumber : failedNumbers) {
-                    failedNumberResult += failedNumber + ", ";
+                    if(count < failedNumbers.size()) 
+                    {
+                        failedNumberResult += failedNumber + ", ";
+                    } else 
+                    {
+                        failedNumberResult += failedNumber;
+                    }
+                    count++;
                 }
-                throw new Exception(failedNumbers.size() + " phone number(s) already in use. They were: " + failedNumberResult);
+                throw new DublicateException(failedNumbers.size() + " phone number(s) already in use. They were: " + failedNumberResult);
             }
             em.close();
         }
     }
 
-    public PersonDTO editPerson(PersonDTO p) throws Exception {
-        if ((p.getfName().length() == 0) || (p.getlName().length() == 0)) {
-            throw new Exception("First Name and/or Last Name is missing");
+    public PersonDTO editPerson(PersonDTO p) throws MissingInputException, ObjectNotFoundException {
+        if ((p.getfName().isEmpty() || p.getfName() == null) || (p.getlName().isEmpty() || p.getlName() == null)) {
+            throw new MissingInputException("Field \"fName\" AND \"lName\" is required.");
         }
         EntityManager em = getEntityManager();
 
@@ -185,7 +240,7 @@ public class PersonFacade {
             Person person = em.find(Person.class,
                     p.getId());
             if (person == null) {
-                throw new Exception(String.format("Person with id: (%d) not found", p.getId()));
+                throw new ObjectNotFoundException(String.format("Update failed: Person with provided id: %d doesn't exist", p.getId()));
             } else {
                 person.setEmail(p.getEmail());
                 person.setFirstName(p.getfName());
@@ -196,12 +251,12 @@ public class PersonFacade {
                 person.getAddress().getCityInfo().setZipCode(p.getZipCode());
                 // ToDo: 
                 // Implement phone edit + hobby edit.
-                /*PhonesDTO phones = new PhonesDTO(person.getPhoneNumbers());
-                Set<Phone> newPhones = new HashSet();
-                for (PhoneDTO phone : phones.getAll()) {
-                    newPhones.add(new Phone(phone.getpNumbers(), phone.getpDescription()));
+                /*Set<Phone> phoneNumbers = new HashSet();
+                PhonesDTO phoneNumbersDTO = p.getPhoneNumbers();
+                for(PhoneDTO phoneDto : phoneNumbersDTO.getAll()) {
+                    phoneNumbers.add(new Phone(phoneDto.getpNumbers(), phoneDto.getpDescription()));
                 }
-                person.setPhonesNumbers(newPhones);*/
+                person.setPhonesNumbers(phoneNumbers);*/
             }
             em.getTransaction().commit();
             return new PersonDTO(person);
@@ -211,7 +266,7 @@ public class PersonFacade {
 
     }
 
-    public PersonsDTO getPersonsByHobby(String hobbyName) throws Exception {
+    public PersonsDTO getPersonsByHobby(String hobbyName) throws ObjectNotFoundException {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobby", Hobby.class
@@ -219,21 +274,21 @@ public class PersonFacade {
         hobbyQuery.setParameter("hobby", hobbyName);
         List<Hobby> hobbyList = hobbyQuery.getResultList();
         try {
-            if (hobbyList != null) {
+            if (hobbyList != null || !hobbyList.isEmpty()) {
                 TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbies", Person.class
                 );
                 query.setParameter("hobbies", hobbyName);
                 List<Person> persons = query.getResultList();
                 return new PersonsDTO(persons);
             } else {
-                throw new Exception(String.format("Hobby with name: (%s) not found", hobbyName));
+                throw new ObjectNotFoundException(String.format("Hobby with provided name: %s not found.", hobbyName));
             }
         } finally {
             em.close();
         }
     }
     
-    public PersonsDTO getPersonsByCity(String cityName) throws Exception {
+    public PersonsDTO getPersonsByCity(String cityName) throws ObjectNotFoundException {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         TypedQuery<CityInfo> cityInfoQuery = em.createQuery("SELECT ci FROM CityInfo ci WHERE ci.city = :cityName", CityInfo.class);
@@ -246,7 +301,7 @@ public class PersonFacade {
                 List<Person> persons = query.getResultList();
                 return new PersonsDTO(persons);
             } else {
-                throw new Exception(String.format("City with name: (%s) not found", cityInfoQuery));
+                throw new ObjectNotFoundException(String.format("City with provided name: %s not found.", cityName));
             }
         } finally {
             em.close();

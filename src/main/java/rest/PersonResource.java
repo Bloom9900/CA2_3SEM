@@ -6,6 +6,9 @@ import dto.AddressDTO;
 import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PhoneDTO;
+import exceptions.DublicateException;
+import exceptions.MissingInputException;
+import exceptions.ObjectNotFoundException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
@@ -37,28 +40,28 @@ public class PersonResource {
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllPersons() {
+    public String getAllPersons() throws ObjectNotFoundException {
         return gson.toJson(facade.getAllPersons());
     }
     
     @Path("all/zipcodes")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getZipCodes() {
+    public String getZipCodes() throws ObjectNotFoundException {
         return gson.toJson(facade.getAllCityInfos());
     }
 
     @Path("{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPerson(@PathParam("id") long id ) {       
+    public String getPerson(@PathParam("id") long id ) throws ObjectNotFoundException {       
         return gson.toJson(facade.getPerson(id));
     }
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addPerson(String info) throws Exception {
+    public String addPerson(String info) throws MissingInputException, ObjectNotFoundException, DublicateException {
        PersonDTO pDTO = gson.fromJson(info, PersonDTO.class);
        AddressDTO aDTO = gson.fromJson(info, AddressDTO.class);
        PhoneDTO phDTO = gson.fromJson(info, PhoneDTO.class);
@@ -71,14 +74,14 @@ public class PersonResource {
     @Path("hobby/{hobby}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonByHobby(@PathParam("hobby") String hobby) throws Exception {
+    public String getPersonByHobby(@PathParam("hobby") String hobby) throws ObjectNotFoundException {
         return gson.toJson(facade.getPersonsByHobby(hobby));
     }
     
     @Path("city/{city}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPhoneNumberByCity(@PathParam("city") String city) throws Exception {
+    public String getPhoneNumberByCity(@PathParam("city") String city) throws ObjectNotFoundException {
         return gson.toJson(facade.getPersonsByCity(city));
     }
     
@@ -86,7 +89,7 @@ public class PersonResource {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public String updatePerson(@PathParam("id") long id,  String person) throws Exception {
+    public String updatePerson(@PathParam("id") long id,  String person) throws MissingInputException, ObjectNotFoundException {
         PersonDTO pDTO = gson.fromJson(person, PersonDTO.class);
         pDTO.setId(id);
         PersonDTO pNew = facade.editPerson(pDTO);
