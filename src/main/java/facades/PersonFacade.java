@@ -1,6 +1,7 @@
 package facades;
 
 import dto.CityInfosDTO;
+import dto.HobbiesDTO;
 import dto.HobbyDTO;
 import dto.PersonDTO;
 import dto.PersonsDTO;
@@ -138,61 +139,52 @@ public class PersonFacade {
 
         try {
             if (phones != null) {
-                String[] aSplit = phones.split(",");
-                String[] descSplit = {""};
-                if(phoneDescs != null) {
-                    descSplit = phoneDescs.split(",");
-                }
-                for (int i = 0; i < aSplit.length; i++) {
+                List<Phone> phonesToValidate = createPhoneListFromJSON(phones, phoneDescs);
+                for (Phone phone : phonesToValidate) {
                     TypedQuery<Phone> phoneQuery = em.createQuery("SELECT p FROM Phone p WHERE p.number = :numbers", Phone.class);
-                    phoneQuery.setParameter("numbers", aSplit[i].trim());
-                    Phone phone = new Phone();
+                    phoneQuery.setParameter("numbers", phone.getNumber());
+                    Phone phoneFromDB = new Phone();
 
                     if (!phoneQuery.getResultList().isEmpty()) {
-                        phone = (Phone) phoneQuery.getSingleResult();
+                        phoneFromDB = (Phone) phoneQuery.getSingleResult();
                     }
-                    if (descSplit.length > i) {
-                        if (aSplit[i].trim().equals(phone.getNumber())) {
-                            failedNumbers.add(aSplit[i].trim());
+                    if (!(phone.getDescription().isEmpty())) {
+                        if (phone.getNumber().equals(phoneFromDB.getNumber())) {
+                            failedNumbers.add(phone.getNumber());
                         } else {
-                            realPerson.addPhone(new Phone(aSplit[i].trim(), descSplit[i].trim()));
+                            realPerson.addPhone(new Phone(phone.getNumber(), phone.getDescription()));
                         }
                     } else {
-                        if (aSplit[i].trim().equals(phone.getNumber())) {
-                            failedNumbers.add(aSplit[i].trim());
+                        if (phone.getNumber().equals(phoneFromDB.getNumber())) {
+                            failedNumbers.add(phone.getNumber());
                         } else {
-                            realPerson.addPhone(new Phone(aSplit[i].trim(), "No description"));
+                            realPerson.addPhone(new Phone(phone.getNumber(), "No description"));
                         }
                     }
                 }
             }
 
             if (hobbies != null) {
-                String[] hSplit = hobbies.split(",");
-                String[] hDescSplit = {""};
-                if(hobbyDescs != null) {
-                    hDescSplit = hobbyDescs.split(",");
-                }
-
-                for (int i = 0; i < hSplit.length; i++) {
+                List<Hobby> hobbiesToValidate = createHobbyListFromJSON(hobbies, hobbyDescs);
+                for (Hobby hobby : hobbiesToValidate) {
                     TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyNames", Hobby.class);
-                    hobbyQuery.setParameter("hobbyNames", hSplit[i].trim().toLowerCase());
-                    Hobby hobby = new Hobby();
+                    hobbyQuery.setParameter("hobbyNames", hobby.getName());
+                    Hobby hobbyFromDB = new Hobby();
 
                     if (!hobbyQuery.getResultList().isEmpty()) {
-                        hobby = (Hobby) hobbyQuery.getSingleResult();
+                        hobbyFromDB = (Hobby) hobbyQuery.getSingleResult();
                     }
-                    if (hDescSplit.length > i) {
-                        if (hSplit[i].trim().toLowerCase().equals(hobby.getName())) {
-                            realPerson.addHobby(hobby);
+                    if (!(hobby.getDescription().isEmpty())) {
+                        if (hobby.getName().equals(hobbyFromDB.getName())) {
+                            realPerson.addHobby(hobbyFromDB);
                         } else {
-                            realPerson.addHobby(new Hobby(hSplit[i].trim().toLowerCase(), hDescSplit[i].trim()));
+                            realPerson.addHobby(new Hobby(hobby.getName(), hobby.getDescription()));
                         }
                     } else {
-                        if (hSplit[i].trim().toLowerCase().equals(hobby.getName())) {
-                            realPerson.addHobby(hobby);
+                        if (hobby.getName().equals(hobbyFromDB.getName())) {
+                            realPerson.addHobby(hobbyFromDB);
                         } else {
-                            realPerson.addHobby(new Hobby(hSplit[i].trim().toLowerCase(), "No description"));
+                            realPerson.addHobby(new Hobby(hobby.getName(), "No description"));
                         }
                     }
                 }
@@ -228,6 +220,44 @@ public class PersonFacade {
             em.close();
         }
     }
+        
+    private List<Phone> createPhoneListFromJSON(String numbers, String description) {
+        List<Phone> resultAllPhones = new ArrayList();
+        
+        String[] numbersSplit = numbers.split(",");
+        String[] descSplit = {""};
+        if(description != null) {
+            descSplit = description.split(",");
+        }
+        for (int i = 0; i < numbersSplit.length; i++) {
+            if (descSplit.length > i) {
+                resultAllPhones.add(new Phone(numbersSplit[i].trim(), descSplit[i].trim()));
+            } else {
+                resultAllPhones.add(new Phone(numbersSplit[i].trim(), "No description"));
+            }
+        }
+        
+        return resultAllPhones;
+    }
+    
+    private List<Hobby> createHobbyListFromJSON(String names, String description) {
+        List<Hobby> resultAllHobbies = new ArrayList();
+        
+        String[] namesSplit = names.split(",");
+        String[] descSplit = {""};
+        if(description != null) {
+            descSplit = description.split(",");
+        }
+        for (int i = 0; i < namesSplit.length; i++) {
+            if (descSplit.length > i) {
+                resultAllHobbies.add(new Hobby(namesSplit[i].trim().toLowerCase(), descSplit[i].trim()));
+            } else {
+                resultAllHobbies.add(new Hobby(namesSplit[i].trim().toLowerCase(), "No description"));
+            }
+        }
+        
+        return resultAllHobbies;
+    }
 
     public PersonDTO editPerson(PersonDTO p) throws MissingInputException, ObjectNotFoundException {
         if ((p.getfName().isEmpty() || p.getfName() == null) || (p.getlName().isEmpty() || p.getlName() == null)) {
@@ -249,14 +279,27 @@ public class PersonFacade {
                 person.getAddress().setAdditionalInfo(p.getAdditionalInfo());
                 person.getAddress().getCityInfo().setCity(p.getCity());
                 person.getAddress().getCityInfo().setZipCode(p.getZipCode());
-                // ToDo: 
-                // Implement phone edit + hobby edit.
-                /*Set<Phone> phoneNumbers = new HashSet();
+                // Delete old phones.
+                Query queryPhone = em.createQuery("DELETE FROM Phone ph WHERE ph.person = :person", Phone.class);
+                queryPhone.setParameter("person", person);
+                // Add new phone numbers.
+                Set<Phone> phoneNumbers = new HashSet();
                 PhonesDTO phoneNumbersDTO = p.getPhoneNumbers();
-                for(PhoneDTO phoneDto : phoneNumbersDTO.getAll()) {
-                    phoneNumbers.add(new Phone(phoneDto.getpNumbers(), phoneDto.getpDescription()));
+                for(PhoneDTO phoneDTO : phoneNumbersDTO.getAll()) {
+                    phoneNumbers.add(new Phone(phoneDTO.getpNumbers(), phoneDTO.getpDescription()));
                 }
-                person.setPhonesNumbers(phoneNumbers);*/
+                person.setPhonesNumbers(phoneNumbers);
+                
+                // Delete old hobbies.
+                Query queryHobby = em.createQuery("DELETE FROM Person p WHERE p.hobbies = :hobbies", Person.class);
+                queryHobby.setParameter("hobbies", person.getHobbies()).executeUpdate();
+                // Add new hobbies.
+                Set<Hobby> hobbies = new HashSet();
+                HobbiesDTO hobbiesDTO = p.getHobbies();
+                for(HobbyDTO hobbyDTO : hobbiesDTO.getAll()) {
+                    hobbies.add(new Hobby(hobbyDTO.gethNames(), hobbyDTO.gethDescription()));
+                }
+                person.setHobbies(hobbies);
             }
             em.getTransaction().commit();
             return new PersonDTO(person);

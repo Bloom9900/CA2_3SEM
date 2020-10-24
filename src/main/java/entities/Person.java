@@ -105,6 +105,11 @@ public class Person implements Serializable {
     
     public void setPhonesNumbers(Set<Phone> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+        if(phoneNumbers != null) {
+            for(Phone phone : phoneNumbers) {
+                phone.setPerson(this);
+            }
+        }
     }
     
     public void addAddress(Address address) {
@@ -132,6 +137,11 @@ public class Person implements Serializable {
 
     public void setHobbies(Set<Hobby> hobbies) {
         this.hobbies = hobbies;
+        if(hobbies != null) {
+            for(Hobby hobby : hobbies) {
+                hobby.addPerson(this);
+            }
+        }
     }
     
 }
