@@ -277,11 +277,16 @@ public class PersonFacade {
                 person.setLastName(p.getlName());
                 person.getAddress().setStreet(p.getStreet());
                 person.getAddress().setAdditionalInfo(p.getAdditionalInfo());
-                person.getAddress().getCityInfo().setCity(p.getCity());
-                person.getAddress().getCityInfo().setZipCode(p.getZipCode());
+                CityInfo cityInfo = em.find(CityInfo.class, p.getZipCode());
+                if (cityInfo != null) {
+                    person.getAddress().setCityInfo(cityInfo);
+                } else {
+                    throw new ObjectNotFoundException(String.format("City with provided zip code: %s not found.", p.getZipCode()));
+                }
+                
                 // Delete old phones.
                 Query queryPhone = em.createQuery("DELETE FROM Phone ph WHERE ph.person = :person", Phone.class);
-                queryPhone.setParameter("person", person);
+                queryPhone.setParameter("person", person).executeUpdate();
                 // Add new phone numbers.
                 Set<Phone> phoneNumbers = new HashSet();
                 PhonesDTO phoneNumbersDTO = p.getPhoneNumbers();
@@ -290,14 +295,28 @@ public class PersonFacade {
                 }
                 person.setPhonesNumbers(phoneNumbers);
                 
-                // Delete old hobbies.
+                /*
+                // Delete old hobbies
                 Query queryHobby = em.createQuery("DELETE FROM Person p WHERE p.hobbies = :hobbies", Person.class);
                 queryHobby.setParameter("hobbies", person.getHobbies()).executeUpdate();
+                */
+                
                 // Add new hobbies.
                 Set<Hobby> hobbies = new HashSet();
                 HobbiesDTO hobbiesDTO = p.getHobbies();
                 for(HobbyDTO hobbyDTO : hobbiesDTO.getAll()) {
-                    hobbies.add(new Hobby(hobbyDTO.gethNames(), hobbyDTO.gethDescription()));
+                    Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyName", Hobby.class);
+                    query.setParameter("hobbyName", hobbyDTO.gethNames());
+                    if (!query.getResultList().isEmpty()) {
+                        Hobby hobby= (Hobby) query.getSingleResult();
+                        if(hobbyDTO.gethNames().equals(hobby.getName())) {
+                            hobbies.add(hobby);
+                        } else {
+                            hobbies.add(new Hobby(hobbyDTO.gethNames(), hobbyDTO.gethDescription()));
+                        }
+                    } else {
+                        hobbies.add(new Hobby(hobbyDTO.gethNames(), hobbyDTO.gethDescription()));
+                    }
                 }
                 person.setHobbies(hobbies);
             }

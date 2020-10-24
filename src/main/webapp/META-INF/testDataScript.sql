@@ -5,3 +5,4 @@ INSERT INTO `HOBBY` VALUES (1,'Boksning er en kampsport','boksning'),(2,' Dans e
 INSERT INTO `PERSON` VALUES (1,'DanielB@gmail.com','Daniel','bibsen',1),(2,'eKessler@hotmail.com','Emil','Kessler',2),(3,'Kasperand@hotmail.dk','Kasper','Andersen',3),(4,'cecrub@gmail.com','Cecilie','Ruby',4),(5,'Østergrenn@outlook.dk','Freja','Østergrenn',5),(6,'aaalmastark@outlook.com','Alma','Stark',6),(7,'Bjergsen887@gmail.com','Oscar','Bjergaar',7),(8,'Jan98@hotmail.com','Jan','Nich',8);
 INSERT INTO `HOBBY_PERSON` VALUES (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8);
 INSERT INTO `PHONE` VALUES (1,' Arbejde','22905382',1),(2,'Privat','55232891',1),(3,'Privat','23901892',2),(4,'Arbejde','88901234',3),(5,'Privat','46729810',3),(6,'Privat','92673916',4),(7,'Privat','78196510',5),(8,'Privat','83018356',6),(9,'Arbejde','90631542',6),(10,'Privat','76351823',7),(11,' Arbejde','90901212',8),(12,'Privat','62538792',8);
+ 
