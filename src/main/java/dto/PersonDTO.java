@@ -27,20 +27,18 @@ public class PersonDTO {
         this.id = p.getId();
         if (p.getAddress() != null) {
             this.street = p.getAddress().getStreet();
-            if(p.getAddress().getCityInfo() != null) {
+            if (p.getAddress().getCityInfo() != null) {
                 this.city = p.getAddress().getCityInfo().getCity();
                 this.zipCode = p.getAddress().getCityInfo().getZipCode();
             }
         }
         this.hobbies = new HobbiesDTO(p.getHobbies());
-        
+
     }
-    
+
     public PersonDTO() {
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -108,14 +106,7 @@ public class PersonDTO {
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
-    
-    /*
-    public void addPhone(String numbers, String description) {
-        Phone number = new Phone(numbers, description);
-        number.setPerson(this);
-        this.phoneNumbers.add(number);
-    }
-*/
+
     public void setStreet(String street) {
         this.street = street;
     }
@@ -127,8 +118,6 @@ public class PersonDTO {
     public void setHobbies(HobbiesDTO hobbies) {
         this.hobbies = hobbies;
     }
-    
-    
 
     @Override
     public boolean equals(Object obj) {

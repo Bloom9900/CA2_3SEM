@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import java.io.Serializable;
@@ -19,10 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-/**
- *
- * @author Danie
- */
 @Entity
 @NamedQuery(name = "Address.deleteAllRows", query = "DELETE FROM Address")
 public class Address implements Serializable {

@@ -24,10 +24,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * Rename Class to a relevant name Add add relevant facade methods
- */
+
 public class PersonFacade {
 
     private static PersonFacade instance;
@@ -297,6 +294,7 @@ public class PersonFacade {
                 
                 /*
                 // Delete old hobbies
+                // We have tried to make edit hobby work, but without any success, through the code below
                 Query queryHobby = em.createQuery("DELETE FROM Person p WHERE p.hobbies = :hobbies", Person.class);
                 queryHobby.setParameter("hobbies", person.getHobbies()).executeUpdate();
                 */

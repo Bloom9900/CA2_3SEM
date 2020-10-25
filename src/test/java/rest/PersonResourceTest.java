@@ -1,6 +1,5 @@
 package rest;
 
-
 import dto.CityInfoDTO;
 import dto.PersonDTO;
 import entities.Address;
@@ -180,5 +179,19 @@ public class PersonResourceTest {
                 .body("email", equalTo("test@gmail.com"))
                 .body("fName", equalTo("Jannich"))
                 .body("lName", equalTo("Højmose"));
+    }
+    
+    @Test
+    public void testEditPerson(){
+        PersonDTO person = new PersonDTO(p1);
+        person.setfName("Børge");
+ 
+        given()
+                .contentType("application/json")
+                .body(person)
+                .then()
+                .body("fName", equalTo("Børge"))
+                .body("lName", equalTo("Højmose"))
+                .body("email", equalTo("cph-jm312@cphbusiness.dk"));
     }
 }

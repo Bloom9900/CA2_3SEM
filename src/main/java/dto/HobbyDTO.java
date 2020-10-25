@@ -1,10 +1,9 @@
-
 package dto;
 
 import entities.Hobby;
 
 public class HobbyDTO {
-    
+
     private String hNames;
     private String hDescription;
 
@@ -12,8 +11,6 @@ public class HobbyDTO {
         this.hNames = hobby.getName();
         this.hDescription = hobby.getDescription();
     }
-    
-    
 
     public String gethNames() {
         return hNames;
@@ -30,7 +27,5 @@ public class HobbyDTO {
     public void sethDescription(String hDescription) {
         this.hDescription = hDescription;
     }
-    
-    
-    
+
 }

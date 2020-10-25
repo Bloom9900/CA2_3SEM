@@ -1,6 +1,5 @@
 package facades;
 
-
 import dto.CityInfoDTO;
 import dto.CityInfosDTO;
 import dto.PersonDTO;
@@ -61,7 +60,6 @@ public class PersonFacadeTest {
     }
 
     // Setup the DataBase in a known state BEFORE EACH TEST
-    //TODO -- Make sure to change the code below to use YOUR OWN entity class
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -142,8 +140,6 @@ public class PersonFacadeTest {
         assertEquals(result, expected);
     }
     
-    // Gives constraint sql errors.
-   // @Disabled
     @Test
     public void testAddPerson() throws MissingInputException, ObjectNotFoundException, DublicateException {
         String email = "test@gmail.com";
@@ -163,8 +159,6 @@ public class PersonFacadeTest {
         assertEquals(expected.getEmail(), result.getEmail());
     }
     
-    // The person returns null for some reason. 
-    //@Disabled
     @Test
     public void testEditPerson() throws Exception {
         PersonDTO pTestCreate = new PersonDTO(p1);
