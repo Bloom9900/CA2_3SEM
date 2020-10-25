@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -66,9 +67,14 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();    
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();   
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();      
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNativeQuery("DELETE FROM HOBBY_PERSON").executeUpdate();
+            em.createNativeQuery("ALTER TABLE PERSON AUTO_INCREMENT = 1").executeUpdate();
+            em.createNativeQuery("ALTER TABLE ADDRESS AUTO_INCREMENT = 1").executeUpdate();
             em.createNativeQuery
                 ("INSERT INTO CITYINFO (zip_code, city) VALUES (?, ?),(?, ?),(?, ?)")
                 .setParameter(1, ci1.getZipCode())
@@ -78,6 +84,15 @@ public class PersonFacadeTest {
                 .setParameter(5, ci3.getZipCode())
                 .setParameter(6, ci3.getCity())
                 .executeUpdate();
+            CityInfo cityInfo1 = em.find(CityInfo.class, ci1.getZipCode());
+            CityInfo cityInfo2 = em.find(CityInfo.class, ci2.getZipCode());
+            CityInfo cityInfo3 = em.find(CityInfo.class, ci3.getZipCode());
+            a1.setCityInfo(cityInfo1);
+            a2.setCityInfo(cityInfo2);
+            a3.setCityInfo(cityInfo3);
+            p1.addAddress(a1);
+            p2.addAddress(a2);
+            p3.addAddress(a3);
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -127,7 +142,8 @@ public class PersonFacadeTest {
         assertEquals(result, expected);
     }
     
-    @Disabled
+    // Gives constraint sql errors.
+   // @Disabled
     @Test
     public void testAddPerson() throws MissingInputException, ObjectNotFoundException, DublicateException {
         String email = "test@gmail.com";
@@ -135,8 +151,8 @@ public class PersonFacadeTest {
         String lName = "Tester";
         String street = "Testvej";
         String additionalInfo = "Test info";
-        String zipCode = "1000";
-        String city = "TestCity";
+        String zipCode = "2990";
+        String city = "Nivå";
         String phoneNums = "12345678,87654321";
         String phoneDescs = "Arbejde,Privat";
         String hobbyNames = "Dans,Taekwondo";
@@ -145,5 +161,18 @@ public class PersonFacadeTest {
         Person p = new Person(email, fName, lName, new Address(street, additionalInfo));
         PersonDTO expected = new PersonDTO(p);
         assertEquals(expected.getEmail(), result.getEmail());
+    }
+    
+    // The person returns null for some reason. 
+    //@Disabled
+    @Test
+    public void testEditPerson() throws Exception {
+        PersonDTO pTestCreate = new PersonDTO(p1);
+        PersonDTO expResult = new PersonDTO(p1);
+        pTestCreate.setfName("Hans");
+        expResult.setfName("Hans");
+        
+        PersonDTO result = facade.editPerson(pTestCreate);
+        assertEquals(expResult.getfName(), result.getfName());
     }
 }
